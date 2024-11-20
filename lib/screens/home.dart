@@ -251,7 +251,11 @@ class HomeScreen extends StatelessWidget {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
                 child: Container(
-                  color: AppColors.background.withOpacity(.4),
+                  decoration: BoxDecoration(
+                      color: AppColors.background.withOpacity(.4),
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20))),
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
@@ -261,34 +265,31 @@ class HomeScreen extends StatelessWidget {
                         tag: 'WeeklyChart',
                         child: WeeklyChart(textTheme: textTheme),
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () => Navigator.pushNamed(
-                              context, Statistics.routeName),
-                          child: Container(
-                            padding: EdgeInsets.all(6.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(width: 4.w),
-                                const Text("More Stats"),
-                                SizedBox(width: 4.w),
-                                Icon(Icons.chevron_right_rounded),
-                              ],
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () => Navigator.pushNamed(
+                                context, Statistics.routeName),
+                            child: Container(
+                              padding: EdgeInsets.all(6.w),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(.7),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(width: 10.w),
+                                  const Text("More Stats"),
+                                  SizedBox(width: 4.w),
+                                  Icon(Icons.chevron_right_rounded),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                        // TextButton.icon(
-                        //   onPressed: () => Navigator.pushNamed(
-                        //       context, Statistics.routeName),
-                        //   icon: const Text("More Stats"),
-                        //   label: const Icon(Icons.chevron_right_rounded),
-                        // ),
                       ),
                     ],
                   ),

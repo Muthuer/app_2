@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../services/routines_provider.dart';
+import 'app_colors.dart';
 
 class WeeklyChart extends StatefulWidget {
   const WeeklyChart({
@@ -21,122 +22,128 @@ class _WeeklyChartState extends State<WeeklyChart> {
   int index = -1;
   @override
   Widget build(BuildContext context) {
-    return Card(
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Weekly Activity',
-                  style: widget.textTheme.headlineSmall!
-                      .apply(fontWeightDelta: 1)),
-              Consumer<RoutineModel>(
-                builder: ((context, value, child) => Text(
-                    'You have completed ${value.getWeeklyStats().sum} ${value.getWeeklyStats().sum > 1 ? "tasks" : "task"} this week.',
-                    style: widget.textTheme.bodyMedium)),
-              ),
-              const SizedBox(height: 15),
-              SizedBox(
-                  height: 160,
-                  child: Consumer<RoutineModel>(
-                    builder: ((context, value, child) {
-                      var barGroupData = value
-                          .getWeeklyStats()
-                          .asMap()
-                          .map((key, val) => MapEntry(
-                              key,
-                              BarChartGroupData(
-                                x: key,
-                                barRods: [
-                                  BarChartRodData(
-                                    width: 15,
-                                    backDrawRodData: BackgroundBarChartRodData(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .surfaceContainerHighest,
-                                      show: true,
-                                      toY: value
-                                                  .getWeeklyStats()
-                                                  .reduce(max)
-                                                  .toDouble() ==
-                                              0
-                                          ? 10
-                                          : value
-                                              .getWeeklyStats()
-                                              .reduce(max)
-                                              .toDouble(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10.0,
+      ),
+      child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white.withOpacity(.6),
+              borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Weekly Activity',
+                    style: widget.textTheme.headlineSmall!
+                        .apply(fontWeightDelta: 1)),
+                Consumer<RoutineModel>(
+                  builder: ((context, value, child) => Text(
+                      'You have completed ${value.getWeeklyStats().sum} ${value.getWeeklyStats().sum > 1 ? "tasks" : "task"} this week.',
+                      style: widget.textTheme.bodyMedium)),
+                ),
+                const SizedBox(height: 15),
+                SizedBox(
+                    height: 160,
+                    child: Consumer<RoutineModel>(
+                      builder: ((context, value, child) {
+                        var barGroupData = value
+                            .getWeeklyStats()
+                            .asMap()
+                            .map((key, val) => MapEntry(
+                                key,
+                                BarChartGroupData(
+                                  x: key,
+                                  barRods: [
+                                    BarChartRodData(
+                                      width: 15,
+                                      backDrawRodData:
+                                          BackgroundBarChartRodData(
+                                        color: Colors.pink[50],
+                                        show: true,
+                                        toY: value
+                                                    .getWeeklyStats()
+                                                    .reduce(max)
+                                                    .toDouble() ==
+                                                0
+                                            ? 10
+                                            : value
+                                                .getWeeklyStats()
+                                                .reduce(max)
+                                                .toDouble(),
+                                      ),
+                                      toY: val.toDouble(),
+                                      color: key == index
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withOpacity(0.5)
+                                          : Colors.pink[200],
                                     ),
-                                    toY: val.toDouble(),
-                                    color: key == index
-                                        ? Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(0.5)
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .inversePrimary,
+                                  ],
+                                )))
+                            .values
+                            .toList();
+                        return BarChart(
+                            swapAnimationDuration:
+                                const Duration(milliseconds: 250), // Optional
+                            swapAnimationCurve: Curves.bounceOut,
+                            BarChartData(
+                              barTouchData: BarTouchData(
+                                touchTooltipData: barToolTipData(context),
+                                touchCallback:
+                                    (FlTouchEvent event, barTouchResponse) {
+                                  setState(() {
+                                    if (!event.isInterestedForInteractions ||
+                                        barTouchResponse == null ||
+                                        barTouchResponse.spot == null) {
+                                      index = -1;
+                                      return;
+                                    }
+                                    index = barTouchResponse
+                                        .spot!.touchedBarGroupIndex;
+                                  });
+                                },
+                              ),
+                              borderData: FlBorderData(show: false),
+                              gridData: const FlGridData(show: false),
+                              alignment: BarChartAlignment.spaceAround,
+                              titlesData: FlTitlesData(
+                                show: true,
+                                bottomTitles: AxisTitles(
+                                  sideTitles: SideTitles(
+                                    showTitles: true,
+                                    reservedSize: 40,
+                                    getTitlesWidget: ((value, meta) =>
+                                        getTitles(
+                                            value,
+                                            meta,
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                            Colors.pink.shade200)),
                                   ),
-                                ],
-                              )))
-                          .values
-                          .toList();
-                      return BarChart(
-                          swapAnimationDuration:
-                              const Duration(milliseconds: 250), // Optional
-                          swapAnimationCurve: Curves.bounceOut,
-                          BarChartData(
-                            barTouchData: BarTouchData(
-                              touchTooltipData: barToolTipData(context),
-                              touchCallback:
-                                  (FlTouchEvent event, barTouchResponse) {
-                                setState(() {
-                                  if (!event.isInterestedForInteractions ||
-                                      barTouchResponse == null ||
-                                      barTouchResponse.spot == null) {
-                                    index = -1;
-                                    return;
-                                  }
-                                  index = barTouchResponse
-                                      .spot!.touchedBarGroupIndex;
-                                });
-                              },
-                            ),
-                            borderData: FlBorderData(show: false),
-                            gridData: const FlGridData(show: false),
-                            alignment: BarChartAlignment.spaceAround,
-                            titlesData: FlTitlesData(
-                              show: true,
-                              bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  reservedSize: 40,
-                                  getTitlesWidget: ((value, meta) => getTitles(
-                                      value,
-                                      meta,
-                                      Theme.of(context).colorScheme.onSurface,
-                                      Theme.of(context)
-                                          .colorScheme
-                                          .inversePrimary)),
+                                ),
+                                leftTitles: const AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                topTitles: const AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                rightTitles: const AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
                                 ),
                               ),
-                              leftTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              topTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              rightTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                            ),
-                            barGroups: barGroupData,
-                          ));
-                    }),
-                  )),
-            ],
-          ),
-        ));
+                              barGroups: barGroupData,
+                            ));
+                      }),
+                    )),
+              ],
+            ),
+          )),
+    );
   }
 }
 

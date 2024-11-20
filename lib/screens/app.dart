@@ -116,14 +116,13 @@ class _AppState extends State<App> {
             ),
           ],
         ),
-        body: SafeArea(
-          child: PageView(
-            controller: _pageController,
-            onPageChanged: (value) => setState(() {
-              _selectedIndex = value;
-            }),
-            children: widgetOptions,
-          ),
+        //!   safeArea
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (value) => setState(() {
+            _selectedIndex = value;
+          }),
+          children: widgetOptions,
         ),
       ),
     );
