@@ -64,7 +64,7 @@ class _RoutineTileState extends State<RoutineTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(2),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Slidable(
         enabled: !isExpanded,
         closeOnScroll: true,
@@ -78,34 +78,60 @@ class _RoutineTileState extends State<RoutineTile> {
                     .addToArchive(widget.routine.id);
               }),
           children: [
-            Action(
-              onPress: ((context) {
-                Provider.of<RoutineModel>(context, listen: false)
-                    .addToArchive(widget.routine.id);
-              }),
-              color: Colors.brown[300]!,
-              icon: Icons.archive_rounded,
-              label: 'Archive',
+            Expanded(
+              child: Container(
+                width: 20,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Action(
+                  onPress: ((context) {
+                    Provider.of<RoutineModel>(context, listen: false)
+                        .addToArchive(widget.routine.id);
+                  }),
+                  color: Colors.white,
+                  // icon: Icons.archive_rounded,
+                  label: 'Archive',
+                ),
+              ),
             ),
+            SizedBox(
+              width: 20,
+            )
           ],
         ),
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
           children: [
-            Action(
-              onPress: ((context) {
-                Provider.of<RoutineModel>(context, listen: false)
-                    .toggleMarkAsCompleted(widget.routine.id);
-              }),
-              color: Colors.blue[300]!,
-              icon: Icons.checklist_rounded,
-              label: widget.routine.isCompleted
-                  ? 'Mark as Incomplete'
-                  : 'Mark as Completed',
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: widget.routine.isCompleted ? Colors.red : Colors.green,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                margin: EdgeInsets.only(left: 20),
+                // height: 50,
+                child: Action(
+                  onPress: ((context) {
+                    Provider.of<RoutineModel>(context, listen: false)
+                        .toggleMarkAsCompleted(widget.routine.id);
+                  }),
+                  color: Colors.white,
+                  // icon: Icons.checklist_rounded,
+                  label: widget.routine.isCompleted
+                      ? 'Mark Incomplete'
+                      : 'Mark Completed',
+                ),
+              ),
             ),
           ],
         ),
-        child: Card(
+        child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(.4),
+              borderRadius: BorderRadius.circular(20),
+            ),
             child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: CustomTile(
@@ -172,35 +198,33 @@ class Action extends StatelessWidget {
       {super.key,
       required this.onPress,
       required this.color,
-      required this.icon,
+      // required this.icon,
       required this.label});
 
   final Function(BuildContext context) onPress;
   final Color color;
-  final IconData icon;
+  // final IconData icon;
   final String label;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Center(
-            child: TextButton.icon(
-          onPressed: (() {
-            onPress(context);
-            Slidable.of(context)?.close();
-          }),
-          icon: Icon(
-            icon,
-            color: color,
-          ),
-          label: Text(
-            label,
-            style: Theme.of(context).textTheme.titleMedium!.apply(color: color),
-          ),
-        )),
+    return Center(
+        child: TextButton.icon(
+      onPressed: (() {
+        onPress(context);
+        Slidable.of(context)?.close();
+      }),
+      // icon: Icon(
+      //   icon,
+      //   color: color,
+      // ),
+      label: Text(
+        label,
+        style: TextStyle(
+          fontSize: 15,
+          color: color,
+        ),
       ),
-    );
+    ));
   }
 }
 
@@ -257,21 +281,20 @@ class CustomTile extends StatelessWidget {
                       AnimatedCrossFade(
                         firstChild: Text(
                             'Completed ${routine.tasks.length - routine.inCompletedTasks.length} out of ${routine.tasks.length}'),
-                        secondChild: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        secondChild: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Expanded(
+                            // Expanded(
+                            //   child: Text(
+                            //       "${routine.getTimeLeft().inMinutes} mins left"),
+                            // ),
+                            Align(
+                              alignment: Alignment.centerLeft,
                               child: Text(
-                                  "${routine.getTimeLeft().inMinutes} mins left"),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'Completed ${routine.tasks.length - routine.inCompletedTasks.length} / ${routine.tasks.length}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  ),
+                                'Completed ${routine.tasks.length - routine.inCompletedTasks.length} / ${routine.tasks.length}',
+                                style: const TextStyle(
+                                  // color: Colors.black,
+                                  fontSize: 12,
                                 ),
                               ),
                             )
@@ -284,13 +307,13 @@ class CustomTile extends StatelessWidget {
                       ),
                     const SizedBox(height: 5),
                     LinearPercentIndicator(
+                      backgroundColor: Colors.pink[100],
                       animateFromLastPercent: true,
                       animation: true,
                       percent: routine.getPercentage().clamp(0, 1),
                       barRadius: const Radius.circular(10),
                       lineHeight: 3,
-                      progressColor:
-                          Theme.of(context).colorScheme.inversePrimary,
+                      progressColor: Colors.green[400],
                       padding: EdgeInsets.zero,
                     ),
                   ],
@@ -309,15 +332,26 @@ class CustomTile extends StatelessWidget {
             onPress(context);
           },
           icon: isToday
-              ? Icon(
-                  routine.isCompleted
-                      ? Icons.replay_rounded
-                      : Icons.play_arrow_rounded,
-                  size: 30,
+              ? Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(.4),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Icon(
+                    color: Colors.black,
+                    routine.isCompleted
+                        ? Icons.replay_rounded
+                        : Icons.play_arrow_rounded,
+                    size: 30,
+                  ),
                 )
-              : const Icon(
-                  Icons.play_arrow_rounded,
-                  size: 30,
+              : Container(
+                  color: Colors.black,
+                  child: const Icon(
+                    Icons.play_arrow_rounded,
+                    size: 30,
+                  ),
                 ),
         ),
         children: [

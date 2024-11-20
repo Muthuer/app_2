@@ -216,13 +216,27 @@ class HomeScreen extends StatelessWidget {
                                                             ),
                                                           );
                                                         },
-                                                        icon: Icon(
-                                                          value.isCompleted
-                                                              ? Icons
-                                                                  .replay_rounded
-                                                              : Icons
-                                                                  .play_arrow_rounded,
-                                                          size: 30,
+                                                        icon: Container(
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white
+                                                                .withOpacity(
+                                                                    .4),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        30),
+                                                          ),
+                                                          child: Icon(
+                                                            value.isCompleted
+                                                                ? Icons
+                                                                    .replay_rounded
+                                                                : Icons
+                                                                    .play_arrow_rounded,
+                                                            size: 30,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
