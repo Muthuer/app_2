@@ -265,7 +265,10 @@ class HomeScreen extends StatelessWidget {
                           left: false,
                           right: false,
                           bottom: false,
-                          child: Header(textTheme: textTheme)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Header(textTheme: textTheme),
+                          )),
                       const SizedBox(height: 20),
                       Hero(
                         tag: 'WeeklyChart',

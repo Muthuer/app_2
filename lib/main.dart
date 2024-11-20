@@ -54,6 +54,12 @@ class MyApp extends StatelessWidget {
               designSize: const Size(393, 852),
               builder: (context, _) {
                 return MaterialApp(
+                  theme: ThemeData.dark().copyWith(
+                    // scaffoldBackgroundColor: darkBlue,
+                    bottomSheetTheme: const BottomSheetThemeData(
+                      backgroundColor: Colors.transparent,
+                    ),
+                  ),
                   debugShowCheckedModeBanner: false,
                   home: Scaffold(
                     body: Center(
@@ -93,6 +99,12 @@ class MyApp extends StatelessWidget {
                         title: 'KudoKo',
                         themeMode: value.getTheme,
                         theme: ThemeData.light(useMaterial3: true).copyWith(
+                          bottomSheetTheme: BottomSheetThemeData(
+                            modalElevation: 0,
+                            elevation: 0,
+                            dragHandleSize: Size(0, 0),
+                            backgroundColor: Colors.white.withOpacity(.7),
+                          ),
                           colorScheme: ColorScheme.fromSeed(
                             seedColor: Colors.purple,
                             brightness: Brightness.light,

@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import '../services/notification_service.dart';
 import 'home.dart';
 import 'routines.dart';
 import 'settings.dart';
 import 'start_routine.dart';
 import 'tasks.dart';
+import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -73,57 +73,75 @@ class _AppState extends State<App> {
       const TasksScreen(isBottomNavWidget: true),
       const SettingsScreen(),
     ];
-    return AnnotatedRegion(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor:
-            Theme.of(context).brightness == Brightness.dark
-                ? Colors.black
-                : Colors.white,
-        statusBarIconBrightness: Theme.of(context).brightness == Brightness.dark
-            ? Brightness.light
-            : Brightness.dark,
-        systemNavigationBarIconBrightness:
-            Theme.of(context).brightness == Brightness.dark
-                ? Brightness.light
-                : Brightness.dark,
-      ),
-      child: Scaffold(
-        bottomNavigationBar: NavigationBar(
-          onDestinationSelected: _onItemTapped,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          selectedIndex: _selectedIndex,
-          destinations: const <Widget>[
-            NavigationDestination(
-              selectedIcon: Icon(Icons.home_rounded),
-              icon: Icon(Icons.home_outlined),
-              label: 'Home',
-            ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.task_alt_rounded),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      extendBody: true,
+      bottomSheet: DotNavigationBar(
+        enableFloatingNavBar: true,
+        enablePaddingAnimation: true,
+        margin: EdgeInsets.all(0),
+        marginR: EdgeInsets.all(0),
+        paddingR: EdgeInsets.all(4),
+        backgroundColor: Colors.black,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        dotIndicatorColor: Colors.white,
+        items: [
+          DotNavigationBarItem(
+              icon: Icon(Icons.home),
+              selectedColor: Colors.white,
+              unselectedColor: Colors.white.withOpacity(.6)),
+          DotNavigationBarItem(
               icon: Icon(Icons.task_alt_outlined),
-              label: 'Routines',
-            ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.list_rounded),
+              selectedColor: Colors.white,
+              unselectedColor: Colors.white.withOpacity(.6)),
+
+          /// Search
+          DotNavigationBarItem(
               icon: Icon(Icons.list_outlined),
-              label: 'Tasks',
-            ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.settings_rounded),
-              icon: Icon(Icons.settings_outlined),
-              label: 'Settings',
-            ),
-          ],
-        ),
-        //!   safeArea
-        body: PageView(
-          controller: _pageController,
-          onPageChanged: (value) => setState(() {
-            _selectedIndex = value;
-          }),
-          children: widgetOptions,
-        ),
+              selectedColor: Colors.white,
+              unselectedColor: Colors.white.withOpacity(.6)),
+
+          /// Profile
+          DotNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              selectedColor: Colors.white,
+              unselectedColor: Colors.white.withOpacity(.6)),
+        ],
+      ),
+      //  NavigationBar(
+      //   onDestinationSelected: _onItemTapped,
+      //   labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+      //   selectedIndex: _selectedIndex,
+      //   destinations: const <Widget>[
+      //     NavigationDestination(
+      //       selectedIcon: Icon(Icons.home_rounded),
+      //       label: 'Home',
+      //     ),
+      //     NavigationDestination(
+      //       selectedIcon: Icon(Icons.task_alt_rounded),
+      //       icon: Icon(Icons.task_alt_outlined),
+      //       label: 'Routines',
+      //     ),
+      //     NavigationDestination(
+      //       selectedIcon: Icon(Icons.list_rounded),
+      //       icon: Icon(Icons.list_outlined),
+      //       label: 'Tasks',
+      //     ),
+      //     NavigationDestination(
+      //       selectedIcon: Icon(Icons.settings_rounded),
+      //       icon: Icon(Icons.settings_outlined),
+      //       label: 'Settings',
+      //     ),
+      //   ],
+      // ),
+      //!   safeArea
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (value) => setState(() {
+          _selectedIndex = value;
+        }),
+        children: widgetOptions,
       ),
     );
   }
