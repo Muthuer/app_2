@@ -41,95 +41,93 @@ class _OnBoardingState extends State<OnBoarding> {
       duration: const Duration(milliseconds: 250),
       builder: (context, value, child) => Scaffold(
         backgroundColor: value,
-        body: SafeArea(
-          child: Container(
-            color: value,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  flex: 10,
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: (value) => setState(() {
-                      _index = value;
-                    }),
-                    children: [
-                      Page(
-                        color: value,
-                        title: "Koduko",
-                        imagePath: 'assets/onboarding/person.png',
-                        des:
-                            "Hey There! Yes, this is an habit tracker don't let the name fool you. It will help you manage your daily or weekly habits with ease.",
-                      ),
-                      Page(
-                        color: value,
-                        title: "You ask features?",
-                        imagePath: 'assets/onboarding/gymTime.png',
-                        des:
-                            "It has a lot of them. You add a routine which can contain multiple tasks, Select a time and you are done. It will remind you at the specified time. Also there are statistics ",
-                      ),
-                      Page(
-                        color: value,
-                        title: "Ready?",
-                        imagePath: 'assets/onboarding/watch.png',
-                        des: "We hope you are! \n Have fun.",
-                      ),
-                    ],
-                  ),
+        body: Container(
+          color: value,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                flex: 10,
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (value) => setState(() {
+                    _index = value;
+                  }),
+                  children: [
+                    Page(
+                      color: value,
+                      title: "Koduko",
+                      imagePath: 'assets/onboarding/person.png',
+                      des:
+                          "Hey There! Yes, this is an habit tracker don't let the name fool you. It will help you manage your daily or weekly habits with ease.",
+                    ),
+                    Page(
+                      color: value,
+                      title: "You ask features?",
+                      imagePath: 'assets/onboarding/gymTime.png',
+                      des:
+                          "It has a lot of them. You add a routine which can contain multiple tasks, Select a time and you are done. It will remind you at the specified time. Also there are statistics ",
+                    ),
+                    Page(
+                      color: value,
+                      title: "Ready?",
+                      imagePath: 'assets/onboarding/watch.png',
+                      des: "We hope you are! \n Have fun.",
+                    ),
+                  ],
                 ),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Buttons(
-                    onSkip: () {
-                      setState(() {
-                        _index = 2;
-                      });
-                      _pageController.animateToPage(2,
-                          curve: Curves.easeIn,
-                          duration: const Duration(milliseconds: 250));
-                    },
-                    pageIndex: _index,
-                    onNext: () {
-                      if (_index == 2) {
-                        final box = Hive.box<bool>('Theme');
-
-                        if (box.isOpen) {
-                          box.put('isNewUser', false);
-                        }
-                        Navigator.pushReplacementNamed(context, '/');
-                      }
-                      if (_index > 1) {
-                        return;
-                      }
-                      setState(() {
-                        _index++;
-                      });
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 250),
+              ),
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Buttons(
+                  onSkip: () {
+                    setState(() {
+                      _index = 2;
+                    });
+                    _pageController.animateToPage(2,
                         curve: Curves.easeIn,
-                      );
-                    },
-                    onPrevious: () {
-                      if (_index <= 0) {
-                        return;
+                        duration: const Duration(milliseconds: 250));
+                  },
+                  pageIndex: _index,
+                  onNext: () {
+                    if (_index == 2) {
+                      final box = Hive.box<bool>('Theme');
+        
+                      if (box.isOpen) {
+                        box.put('isNewUser', false);
                       }
-                      setState(() {
-                        _index--;
-                      });
-                      _pageController.previousPage(
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeIn,
-                      );
-                    },
-                    text: _index == 2 ? 'Start' : null,
-                    color: value,
-                  ),
-                )),
-                const SizedBox(height: 10)
-              ],
-            ),
+                      Navigator.pushReplacementNamed(context, '/');
+                    }
+                    if (_index > 1) {
+                      return;
+                    }
+                    setState(() {
+                      _index++;
+                    });
+                    _pageController.nextPage(
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeIn,
+                    );
+                  },
+                  onPrevious: () {
+                    if (_index <= 0) {
+                      return;
+                    }
+                    setState(() {
+                      _index--;
+                    });
+                    _pageController.previousPage(
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeIn,
+                    );
+                  },
+                  text: _index == 2 ? 'Start' : null,
+                  color: value,
+                ),
+              )),
+              const SizedBox(height: 10)
+            ],
           ),
         ),
       ),

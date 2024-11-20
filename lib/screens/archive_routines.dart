@@ -12,80 +12,78 @@ class ArchiveRoutinesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Consumer<RoutineModel>(
-          builder: (context, value, child) => value.archiveRoutines().isEmpty
-              ? Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      child ?? Container(),
-                      Expanded(
-                        flex: 10,
-                        child: Center(
-                          child: Text(
-                            "Archived routines will show up here!",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .apply(
-                                    displayColor:
-                                        Theme.of(context).colorScheme.onSurface)
-                                .headlineMedium,
-                          ),
+      body: Consumer<RoutineModel>(
+        builder: (context, value, child) => value.archiveRoutines().isEmpty
+            ? Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    child ?? Container(),
+                    Expanded(
+                      flex: 10,
+                      child: Center(
+                        child: Text(
+                          "Archived routines will show up here!",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .apply(
+                                  displayColor:
+                                      Theme.of(context).colorScheme.onSurface)
+                              .headlineMedium,
                         ),
                       ),
-                    ],
-                  ),
-                )
-              : ListView.builder(
-                  itemCount: value.archiveRoutines().length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 10),
-                        child: child ?? Container(),
-                      );
-                    }
-                    index -= 1;
-                    return Card(
-                      margin: const EdgeInsets.all(10),
-                      child: ListTile(
-                        title: Text(
-                          value.archiveRoutines()[index].name,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        subtitle: const Text("Archived"),
-                        trailing: SizedBox(
-                          width: 100,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                color: Colors.brown[300],
-                                onPressed: () {
-                                  Provider.of<RoutineModel>(context,
-                                          listen: false)
-                                      .removeFromArchive(
-                                          value.archiveRoutines()[index].id);
-                                },
-                                icon: const Icon(Icons.unarchive_rounded),
-                              ),
-                              IconButton(
-                                color: Colors.red[300],
-                                onPressed: () {},
-                                icon: const Icon(Icons.delete),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                    ),
+                  ],
+                ),
+              )
+            : ListView.builder(
+                itemCount: value.archiveRoutines().length + 1,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 10),
+                      child: child ?? Container(),
                     );
-                  }),
-          child: const ScreenHeader(text: 'Archived', tag: 'Archived'),
-        ),
+                  }
+                  index -= 1;
+                  return Card(
+                    margin: const EdgeInsets.all(10),
+                    child: ListTile(
+                      title: Text(
+                        value.archiveRoutines()[index].name,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      subtitle: const Text("Archived"),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              color: Colors.brown[300],
+                              onPressed: () {
+                                Provider.of<RoutineModel>(context,
+                                        listen: false)
+                                    .removeFromArchive(
+                                        value.archiveRoutines()[index].id);
+                              },
+                              icon: const Icon(Icons.unarchive_rounded),
+                            ),
+                            IconButton(
+                              color: Colors.red[300],
+                              onPressed: () {},
+                              icon: const Icon(Icons.delete),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+        child: const ScreenHeader(text: 'Archived', tag: 'Archived'),
       ),
     );
   }

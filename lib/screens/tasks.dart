@@ -47,41 +47,39 @@ class TasksScreen extends StatelessWidget {
       ),
       body: Consumer<TaskModel>(
           builder: ((context, value, child) => value.tasks.isEmpty
-              ? SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        child ?? Container(),
-                        const Spacer(),
-                        Text(
-                          "Looks like you haven't created any tasks",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineMedium!
-                              .apply(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurface),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 10),
-                        Center(
-                          child: TextButton.icon(
-                              icon: const Icon(Icons.add),
-                              onPressed: onCreateTask,
-                              label: const Text(
-                                "Create One",
-                                style: TextStyle(fontSize: 18),
-                              )),
-                        ),
-                        const Spacer(),
-                      ],
+              ? Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20, horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    child ?? Container(),
+                    const Spacer(),
+                    Text(
+                      "Looks like you haven't created any tasks",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium!
+                          .apply(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                )
+                    const SizedBox(height: 10),
+                    Center(
+                      child: TextButton.icon(
+                          icon: const Icon(Icons.add),
+                          onPressed: onCreateTask,
+                          label: const Text(
+                            "Create One",
+                            style: TextStyle(fontSize: 18),
+                          )),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+              )
               : ListView.builder(
                   itemCount: value.tasks.length,
                   itemBuilder: (context, index) {

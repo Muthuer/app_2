@@ -176,6 +176,9 @@ class HomeScreen extends StatelessWidget {
                                                             const SizedBox(
                                                                 height: 5),
                                                             LinearPercentIndicator(
+                                                              backgroundColor:
+                                                                  Colors.pink[
+                                                                      100],
                                                               animateFromLastPercent:
                                                                   true,
                                                               animation: true,
@@ -187,10 +190,9 @@ class HomeScreen extends StatelessWidget {
                                                                       .circular(
                                                                       10),
                                                               lineHeight: 3,
-                                                              progressColor: Theme
-                                                                      .of(context)
-                                                                  .colorScheme
-                                                                  .inversePrimary,
+                                                              progressColor:
+                                                                  Colors.green[
+                                                                      400],
                                                               padding:
                                                                   EdgeInsets
                                                                       .zero,
@@ -259,7 +261,11 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      Header(textTheme: textTheme),
+                      SafeArea(
+                          left: false,
+                          right: false,
+                          bottom: false,
+                          child: Header(textTheme: textTheme)),
                       const SizedBox(height: 20),
                       Hero(
                         tag: 'WeeklyChart',

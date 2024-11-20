@@ -27,7 +27,7 @@ class _WeeklyChartState extends State<WeeklyChart> {
         horizontal: 10.0,
       ),
       child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
+          margin: const EdgeInsets.symmetric(vertical: 8.5),
           decoration: BoxDecoration(
               color: Colors.white.withOpacity(.6),
               borderRadius: BorderRadius.circular(20)),
@@ -46,7 +46,7 @@ class _WeeklyChartState extends State<WeeklyChart> {
                 ),
                 const SizedBox(height: 15),
                 SizedBox(
-                    height: 160,
+                    height: 120,
                     child: Consumer<RoutineModel>(
                       builder: ((context, value, child) {
                         var barGroupData = value
