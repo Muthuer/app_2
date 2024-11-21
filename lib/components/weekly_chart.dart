@@ -46,7 +46,7 @@ class _WeeklyChartState extends State<WeeklyChart> {
                 ),
                 const SizedBox(height: 15),
                 SizedBox(
-                    height: 120,
+                    height: 160,
                     child: Consumer<RoutineModel>(
                       builder: ((context, value, child) {
                         var barGroupData = value

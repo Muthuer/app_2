@@ -27,14 +27,15 @@ class RoutineTile extends StatefulWidget {
 class _RoutineTileState extends State<RoutineTile> {
   void onLongPress(BuildContext context) async {
     Routine? r = await showModalBottomSheet<Routine>(
+        backgroundColor: Colors.white,
         isScrollControlled: true,
         isDismissible: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(10),
-            bottom: Radius.zero,
-          ),
-        ),
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.vertical(
+        //     top: Radius.circular(60),
+        //     bottom: Radius.zero,
+        //   ),
+        // ),
         context: context,
         builder: ((context) => CreateRoutineBottomSheet(
               editRoutine: widget.routine,
@@ -79,24 +80,30 @@ class _RoutineTileState extends State<RoutineTile> {
               }),
           children: [
             Expanded(
-              child: Container(
-                width: 20,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Action(
-                  onPress: ((context) {
-                    Provider.of<RoutineModel>(context, listen: false)
-                        .addToArchive(widget.routine.id);
-                  }),
-                  color: Colors.white,
-                  // icon: Icons.archive_rounded,
-                  label: 'Archive',
+              child: GestureDetector(
+                onTap: () {
+                  Provider.of<RoutineModel>(context, listen: false)
+                      .addToArchive(widget.routine.id);
+                },
+                child: Container(
+                  width: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Action(
+                    onPress: ((context) {
+                      Provider.of<RoutineModel>(context, listen: false)
+                          .addToArchive(widget.routine.id);
+                    }),
+                    color: Colors.white,
+                    // icon: Icons.archive_rounded,
+                    label: 'Archive',
+                  ),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             )
           ],
@@ -110,7 +117,7 @@ class _RoutineTileState extends State<RoutineTile> {
                   color: widget.routine.isCompleted ? Colors.red : Colors.green,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                margin: EdgeInsets.only(left: 20),
+                margin: const EdgeInsets.only(left: 20),
                 // height: 50,
                 child: Action(
                   onPress: ((context) {
@@ -333,7 +340,7 @@ class CustomTile extends StatelessWidget {
           },
           icon: isToday
               ? Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(.4),
                     borderRadius: BorderRadius.circular(30),

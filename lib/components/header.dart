@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ScreenHeader extends StatelessWidget {
   const ScreenHeader({super.key, required this.text, required this.tag});
@@ -10,13 +11,16 @@ class ScreenHeader extends StatelessWidget {
       children: [
         Expanded(
           flex: 1,
-          child: IconButton(
-            onPressed: () {
+          child: GestureDetector(
+            onTap: () {
               Navigator.pop(context);
             },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              size: 30,
+            child: Center(
+              child: const Icon(
+                color: Colors.black,
+                Icons.arrow_back_ios,
+                size: 20,
+              ),
             ),
           ),
         ),
@@ -26,10 +30,14 @@ class ScreenHeader extends StatelessWidget {
             tag: tag,
             child: Text(
               text,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineLarge!
-                  .apply(color: Theme.of(context).colorScheme.onSurface),
+              style: GoogleFonts.lato(
+                fontWeight: FontWeight.bold,
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .apply(
+                        displayColor: Theme.of(context).colorScheme.onSurface)
+                    .headlineLarge,
+              ),
               textAlign: TextAlign.center,
             ),
           ),

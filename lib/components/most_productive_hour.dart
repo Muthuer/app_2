@@ -11,29 +11,33 @@ class ProductiveHour extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Selector<RoutineModel, int>(
-      selector: (p0, p1) => p1.getMostProductiveHour(),
-      builder: (context, value, child) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 15),
-            Text(
-              "Most Productive Hour",
-              style: textTheme.titleSmall,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              DateFormat.j().format(
-                  timeOfDayToDateTime(TimeOfDay(hour: value, minute: 0)) ??
-                      DateTime.now()),
-              style: textTheme.headlineLarge,
-            ),
-            const SizedBox(height: 15),
-          ],
+    return Container(
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(.4),
+          borderRadius: BorderRadius.circular(20),
         ),
-      ),
-    ));
+        child: Selector<RoutineModel, int>(
+          selector: (p0, p1) => p1.getMostProductiveHour(),
+          builder: (context, value, child) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 15),
+                Text(
+                  "Most Productive Hour",
+                  style: textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  DateFormat.j().format(
+                      timeOfDayToDateTime(TimeOfDay(hour: value, minute: 0)) ??
+                          DateTime.now()),
+                  style: textTheme.headlineLarge,
+                ),
+                const SizedBox(height: 15),
+              ],
+            ),
+          ),
+        ));
   }
 }

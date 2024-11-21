@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:app_2/utils/duration_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../models/routine.dart';
@@ -164,6 +167,7 @@ class _CreateRoutineBottomSheetState extends State<CreateRoutineBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // color: Colors.transparent,
       padding: EdgeInsets.only(
           top: 10,
           right: 10,
@@ -174,19 +178,37 @@ class _CreateRoutineBottomSheetState extends State<CreateRoutineBottomSheet> {
           Center(
             child: Column(
               children: [
-                const Icon(
-                  Icons.drag_handle_rounded,
-                  size: 26,
+                Container(
+                  width: 40.w,
+                  height: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(.4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                Text(
-                  "Create a Routine",
-                  style: Theme.of(context).textTheme.headlineSmall,
+                const SizedBox(height: 3),
+                Container(
+                  width: 30.w,
+                  height: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(.4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text("Create a Routine",
+                    // style: Theme.of(context).textTheme.headlineSmall,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 32.sp,
+                    )),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TweenAnimationBuilder<double>(
               duration: const Duration(milliseconds: 250),
               tween: Tween<double>(
@@ -242,103 +264,105 @@ class _CreateRoutineBottomSheetState extends State<CreateRoutineBottomSheet> {
               ),
             ),
           ),
-          Buttons(
-              text: pageIndex == 2 ? "Done" : null,
-              pageIndex: pageIndex,
-              onPrevious: () {
-                setState(() {
-                  pageIndex--;
-                });
-                if (pageIndex == 0) {
-                  validateName("");
-                }
-                if (pageIndex == 1) {
+          SafeArea(
+            child: Buttons(
+                text: pageIndex == 2 ? "Done" : null,
+                pageIndex: pageIndex,
+                onPrevious: () {
                   setState(() {
-                    pageComplected = selectedTask.isNotEmpty;
+                    pageIndex--;
                   });
-                }
+                  if (pageIndex == 0) {
+                    validateName("");
+                  }
+                  if (pageIndex == 1) {
+                    setState(() {
+                      pageComplected = selectedTask.isNotEmpty;
+                    });
+                  }
 
-                _pageController.previousPage(
-                  duration: const Duration(milliseconds: 350),
-                  curve: Curves.easeIn,
-                );
-              },
-              onNext: pageComplected
-                  ? () {
-                      FocusScopeNode currentFocus = FocusScope.of(context);
-                      if (!currentFocus.hasPrimaryFocus) {
-                        currentFocus.unfocus();
-                      }
-                      if (pageIndex == 2) {
-                        List<String> temp = [];
-                        selectedDays.forEach((key, value) {
-                          if (value) {
-                            temp.add(key);
-                          }
-                        });
-                        if (widget.editRoutine != null) {
-                          List<Task> diff = Routine.taskDiff(
-                              widget.editRoutine!.tasks, selectedTask);
+                  _pageController.previousPage(
+                    duration: const Duration(milliseconds: 350),
+                    curve: Curves.easeIn,
+                  );
+                },
+                onNext: pageComplected
+                    ? () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+                        if (pageIndex == 2) {
+                          List<String> temp = [];
+                          selectedDays.forEach((key, value) {
+                            if (value) {
+                              temp.add(key);
+                            }
+                          });
+                          if (widget.editRoutine != null) {
+                            List<Task> diff = Routine.taskDiff(
+                                widget.editRoutine!.tasks, selectedTask);
 
-                          if (selectedTask.length >
-                              widget.editRoutine!.tasks.length) {
-                            diff.addAll(widget.editRoutine!.inCompletedTasks);
+                            if (selectedTask.length >
+                                widget.editRoutine!.tasks.length) {
+                              diff.addAll(widget.editRoutine!.inCompletedTasks);
+                            } else {
+                              diff = Routine.taskDiff(
+                                  diff, widget.editRoutine!.inCompletedTasks);
+                            }
+                            return Navigator.pop(
+                                context,
+                                widget.editRoutine!.copyWith(
+                                  tasks: selectedTask,
+                                  name: _nameController.text,
+                                  days: temp,
+                                  time: notifications ? time : null,
+                                  inCompletedTasks: diff,
+                                  isCompleted: diff.isEmpty,
+                                ));
                           } else {
-                            diff = Routine.taskDiff(
-                                diff, widget.editRoutine!.inCompletedTasks);
-                          }
-                          return Navigator.pop(
+                            return Navigator.pop(
                               context,
-                              widget.editRoutine!.copyWith(
-                                tasks: selectedTask,
+                              Routine.create(
                                 name: _nameController.text,
+                                tasks: selectedTask,
                                 days: temp,
-                                time: notifications ? time : null,
-                                inCompletedTasks: diff,
-                                isCompleted: diff.isEmpty,
-                              ));
-                        } else {
-                          return Navigator.pop(
-                            context,
-                            Routine.create(
-                              name: _nameController.text,
-                              tasks: selectedTask,
-                              days: temp,
-                              time: notifications
-                                  ? timeOfDayToDateTime(time)
-                                  : null,
-                            ),
-                          );
+                                time: notifications
+                                    ? timeOfDayToDateTime(time)
+                                    : null,
+                              ),
+                            );
+                          }
                         }
-                      }
 
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 350),
-                        curve: Curves.easeIn,
-                      );
-                      if (pageIndex == 0) {
-                        if (selectedTask.isEmpty) {
-                          setState(() {
-                            pageIndex++;
-                            pageComplected = false;
-                          });
-                          return;
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 350),
+                          curve: Curves.easeIn,
+                        );
+                        if (pageIndex == 0) {
+                          if (selectedTask.isEmpty) {
+                            setState(() {
+                              pageIndex++;
+                              pageComplected = false;
+                            });
+                            return;
+                          }
                         }
-                      }
-                      if (pageIndex == 1) {
-                        if (!selectedDays.values.contains(true)) {
-                          setState(() {
-                            pageComplected = false;
-                            pageIndex++;
-                          });
-                          return;
+                        if (pageIndex == 1) {
+                          if (!selectedDays.values.contains(true)) {
+                            setState(() {
+                              pageComplected = false;
+                              pageIndex++;
+                            });
+                            return;
+                          }
                         }
+                        setState(() {
+                          pageIndex++;
+                        });
                       }
-                      setState(() {
-                        pageIndex++;
-                      });
-                    }
-                  : null)
+                    : null),
+          )
         ],
       ),
     );
@@ -366,26 +390,54 @@ class Buttons extends StatelessWidget {
         Expanded(
           flex: 3,
           child: pageIndex != 0
-              ? ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor:
-                        Theme.of(context).colorScheme.onSecondaryContainer,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.secondaryContainer,
-                  ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                  onPressed: onPrevious,
-                  icon: const Icon(Icons.chevron_left_sharp),
-                  label: Text(
-                    "Back",
-                    style: Theme.of(context).textTheme.bodyLarge,
+              ? GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.pink[50],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: EdgeInsets.all(5),
+                    child: Row(
+                      children: [
+                        Icon(Icons.chevron_left_sharp),
+                        Text(
+                          "Back",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
                   ),
                 )
-              : TextButton(
-                  onPressed: (() {
+              // ? ElevatedButton.icon(
+              //     style: ElevatedButton.styleFrom(
+              //       foregroundColor:
+              //           Theme.of(context).colorScheme.onSecondaryContainer,
+              //       backgroundColor:
+              //           Theme.of(context).colorScheme.secondaryContainer,
+              //     ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+              //     onPressed: onPrevious,
+              //     icon: const Icon(Icons.chevron_left_sharp),
+              //     label: Text(
+              //       "Back",
+              //       style: Theme.of(context).textTheme.bodyLarge,
+              //     ),
+              //   )
+              : GestureDetector(
+                  onTap: () {
                     Navigator.pop(context);
-                  }),
-                  child: Text("Cancel",
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.pink.shade100)),
+                    padding: EdgeInsets.all(5),
+                    margin: EdgeInsets.only(left: 20),
+                    child: Center(
+                      child: Text("Cancel",
+                          style: Theme.of(context).textTheme.bodyLarge),
+                    ),
+                  ),
                 ),
         ),
         const Spacer(
@@ -393,24 +445,26 @@ class Buttons extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor:
-                  Theme.of(context).colorScheme.onSecondaryContainer,
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-            onPressed: onNext,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  text ?? "Next",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                text == null
-                    ? const Icon(Icons.chevron_right_sharp)
-                    : Container()
-              ],
+          child: GestureDetector(
+            onTap: onNext,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.pink[50],
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: EdgeInsets.all(5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    text ?? "Next",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  text == null
+                      ? const Icon(Icons.chevron_right_sharp)
+                      : Container()
+                ],
+              ),
             ),
           ),
         )
@@ -468,8 +522,10 @@ class TaskSelectPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Select Tasks',
-                    style: Theme.of(context).textTheme.headlineMedium!.apply(
-                        color: Theme.of(context).colorScheme.onSurface)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium!
+                        .apply(color: Theme.of(context).colorScheme.onSurface)),
                 TextButton.icon(
                   onPressed: (() {
                     Navigator.pushNamed(
@@ -559,7 +615,6 @@ class TaskSelectPage extends StatelessWidget {
                             )),
                       )))
                   .values
-                  
           ],
         ),
         onReorder: onChangeOrder,

@@ -1,3 +1,4 @@
+import 'package:app_2/components/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,11 @@ class TodayProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(.4),
+        borderRadius: BorderRadius.circular(20),
+      ),
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),
@@ -40,7 +45,7 @@ class TodayProgress extends StatelessWidget {
                   ),
                   Text(
                     "Today's Progress",
-                    style: textTheme.titleMedium,
+                    style: textTheme.bodyMedium,
                   )
                 ],
               ),
@@ -49,10 +54,11 @@ class TodayProgress extends StatelessWidget {
                 children: [
                   CircularPercentIndicator(
                     percent: per,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    backgroundColor: AppColors.indigo,
+                    // Theme.of(context).colorScheme.surfaceContainerHighest,
                     backgroundWidth: 15,
-                    progressColor: Theme.of(context).colorScheme.inversePrimary,
+                    progressColor: Colors.white.withOpacity(0.7),
+                    //  Theme.of(context).colorScheme.inversePrimary,
                     animation: true,
                     circularStrokeCap: CircularStrokeCap.round,
                     radius: 40,

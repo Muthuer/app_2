@@ -262,7 +262,7 @@ class HomeScreen extends StatelessWidget {
         Positioned(
             left: 0,
             right: 0,
-            height: 460.w,
+            height: 480.w,
             child: ClipRect(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
@@ -283,7 +283,7 @@ class HomeScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 20.0),
                             child: Header(textTheme: textTheme),
                           )),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 5),
                       Hero(
                         tag: 'WeeklyChart',
                         child: WeeklyChart(textTheme: textTheme),

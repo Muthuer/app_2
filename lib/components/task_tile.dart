@@ -1,4 +1,5 @@
 import 'package:app_2/utils/duration_to_string.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,12 @@ class TaskTile extends StatelessWidget {
   final void Function(Task) onEdit;
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(.4),
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: ListTile(
         trailing: SizedBox(
           width: 100,
@@ -42,26 +48,46 @@ class TaskTile extends StatelessWidget {
                           color: t.color, duration: t.duration, name: t.name));
                     }
                   },
-                  icon: const Icon(Icons.edit)),
+                  icon: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: const Icon(
+                        Icons.edit,
+                        color: Colors.black,
+                      ))),
               IconButton(
                   onPressed: () async {
-                    showDialog(
-                        context: context,
-                        builder: ((context) => AlertDialog(
-                              title: const Text("Delete task?"),
-                              content: const Text(
-                                  "This Task will be removed from all the routines. if the routine has only this task, then routine will also be deleted."),
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        final brightness = Brightness.dark;
+                        return CupertinoTheme(
+                            data: CupertinoThemeData(
+                              // primaryColor: Colors.green, not now color
+                              brightness: brightness,
+                            ),
+                            child: CupertinoAlertDialog(
+                              title: Text("Delete task?"),
+                              content: Text(
+                                  "This task will be removed from all routines. If a routine contains only this task, the routine will be deleted as well."),
                               actions: [
-                                TextButton(
+                                CupertinoDialogAction(
+                                  child: Text(
+                                    "Not Now",
+                                  ),
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    Navigator.of(context).pop();
                                   },
-                                  child: const Text("CANCEL"),
                                 ),
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                      foregroundColor:
-                                          Theme.of(context).colorScheme.error),
+                                CupertinoDialogAction(
+                                  child: Text(
+                                    "Delete",
+                                    style: TextStyle(
+                                        color: CupertinoColors.destructiveRed),
+                                  ),
                                   onPressed: () {
                                     Provider.of<TaskModel>(context,
                                             listen: false)
@@ -71,14 +97,52 @@ class TaskTile extends StatelessWidget {
                                         .removeTask(task);
                                     Navigator.pop(context);
                                   },
-                                  child: const Text("DELETE"),
-                                )
+                                ),
                               ],
-                            )));
+                            ));
+                      },
+                    );
+                    // showDialog(
+                    //     context: context,
+                    //     builder: ((context) => AlertDialog(
+                    //           title: const Text("Delete task?"),
+                    //           content: const Text(
+                    //               "This task will be removed from all routines. If a routine contains only this task, the routine will be deleted as well."),
+                    //           actions: [
+                    //             // TextButton(
+                    //             //   onPressed: () {
+                    //             //     Navigator.pop(context);
+                    //             //   },
+                    //             //   child: const Text("CANCEL"),
+                    //             // ),
+                    //             TextButton(
+                    //               style: TextButton.styleFrom(
+                    //                   foregroundColor:
+                    //                       Theme.of(context).colorScheme.error),
+                    //               onPressed: () {
+                    //                 Provider.of<TaskModel>(context,
+                    //                         listen: false)
+                    //                     .delete(task.id);
+                    //                 Provider.of<RoutineModel>(context,
+                    //                         listen: false)
+                    //                     .removeTask(task);
+                    //                 Navigator.pop(context);
+                    //               },
+                    //               child: const Text("DELETE"),
+                    //             )
+                    //           ],
+                    //         )));
                   },
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.red[300],
+                  icon: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
                   ))
             ],
           ),
