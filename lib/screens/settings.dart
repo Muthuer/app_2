@@ -83,10 +83,19 @@ class SettingsScreen extends StatelessWidget {
                             style: textTheme.titleLarge,
                           ),
                         ),
-                        IconButton(
-                            onPressed: () => Navigator.pushNamed(
+                        GestureDetector(
+                            onTap: () => Navigator.pushNamed(
                                 context, ArchiveRoutinesScreen.routeName),
-                            icon: const Icon(Icons.chevron_right_rounded)),
+                            child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(.7),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: const Icon(
+                                  Icons.chevron_right_rounded,
+                                  color: Colors.black,
+                                ))),
                       ],
                     ),
                   ),
@@ -113,10 +122,19 @@ class SettingsScreen extends StatelessWidget {
                             style: textTheme.titleLarge,
                           ),
                         ),
-                        IconButton(
-                            onPressed: () => Navigator.pushNamed(
+                        GestureDetector(
+                            onTap: () => Navigator.pushNamed(
                                 context, Statistics.routeName),
-                            icon: const Icon(Icons.chevron_right_rounded)),
+                            child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(.7),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: const Icon(
+                                  Icons.chevron_right_rounded,
+                                  color: Colors.black,
+                                ))),
                       ],
                     ),
                   ),

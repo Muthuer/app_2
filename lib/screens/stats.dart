@@ -45,7 +45,7 @@ class Statistics extends StatelessWidget {
           ),
           Positioned(
               child: Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(10.0),
             child: ListView(
               children: [
                 const SizedBox(height: 10),
@@ -77,9 +77,12 @@ class Statistics extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "History",
-                      style: textTheme.headlineMedium,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        "History",
+                        style: textTheme.headlineMedium,
+                      ),
                     ),
                     GestureDetector(
                       onTap: () async {

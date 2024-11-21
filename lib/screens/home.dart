@@ -142,7 +142,7 @@ class HomeScreen extends StatelessWidget {
                                                           .withOpacity(.4),
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              30),
+                                                              20),
                                                     ),
                                                     margin: const EdgeInsets
                                                         .symmetric(
@@ -284,9 +284,12 @@ class HomeScreen extends StatelessWidget {
                             child: Header(textTheme: textTheme),
                           )),
                       const SizedBox(height: 5),
-                      Hero(
-                        tag: 'WeeklyChart',
-                        child: WeeklyChart(textTheme: textTheme),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Hero(
+                          tag: 'WeeklyChart',
+                          child: WeeklyChart(textTheme: textTheme),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
