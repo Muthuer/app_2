@@ -13,7 +13,7 @@ class ProductiveHour extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(.4),
+          color: Colors.white.withOpacity(.6),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Selector<RoutineModel, int>(

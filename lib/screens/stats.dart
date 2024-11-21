@@ -59,6 +59,9 @@ class Statistics extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(child: ProductiveHour(textTheme: textTheme)),
+                    const SizedBox(
+                      width: 8,
+                    ),
                     Expanded(child: ProductiveDay(textTheme: textTheme)),
                   ],
                 ),
@@ -77,56 +80,85 @@ class Statistics extends StatelessWidget {
                       "History",
                       style: textTheme.headlineMedium,
                     ),
-                    TextButton.icon(
-                        onPressed: () async {
-                          final b = await showDialog<bool>(
-                            context: context,
-                            builder: ((context) => AlertDialog(
-                                  title: const Text("Clear History"),
-                                  content: const Text(
-                                      "This is an irreversible action. This will delete all your stats."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: (() =>
-                                          Navigator.pop(context, false)),
-                                      child: const Text("CANCEL"),
-                                    ),
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                          foregroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .error),
-                                      onPressed: (() =>
-                                          Navigator.pop(context, true)),
-                                      child: const Text("DELETE"),
-                                    )
-                                  ],
-                                )),
-                          );
-                          if (b == true) {
-                            clearHistory();
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                            foregroundColor: Colors.red[300]),
-                        icon: const Icon(Icons.delete),
-                        label: const Text("Clear History"))
+                    GestureDetector(
+                      onTap: () async {
+                        final b = await showDialog<bool>(
+                          context: context,
+                          builder: ((context) => AlertDialog(
+                                title: const Text("Clear History"),
+                                content: const Text(
+                                    "This is an irreversible action. This will delete all your stats."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: (() =>
+                                        Navigator.pop(context, false)),
+                                    child: const Text("CANCEL"),
+                                  ),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                        foregroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .error),
+                                    onPressed: (() =>
+                                        Navigator.pop(context, true)),
+                                    child: const Text("DELETE"),
+                                  )
+                                ],
+                              )),
+                        );
+                        if (b == true) {
+                          clearHistory();
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: const Row(
+                          children: [
+                            Icon(Icons.delete, color: Colors.red),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "Clear History",
+                              style: TextStyle(color: Colors.red),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(height: 15),
                 Selector<RoutineModel, List<TaskEvent>>(
                     builder: ((context, value, child) => Column(
                           children: value.reversed
-                              .map((e) => Card(
+                              .map((e) => Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(.7),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    margin: const EdgeInsets.only(bottom: 8),
                                     child: ListTile(
-                                      trailing: IconButton(
-                                        onPressed: () =>
-                                            Provider.of<RoutineModel>(context,
-                                                    listen: false)
-                                                .removeHistory(e.id),
-                                        color: Colors.red[300],
-                                        icon: const Icon(Icons.close,
-                                            semanticLabel: 'Delete'),
+                                      trailing: GestureDetector(
+                                        onTap: () => Provider.of<RoutineModel>(
+                                                context,
+                                                listen: false)
+                                            .removeHistory(e.id),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                          child: Icon(Icons.close,
+                                              color: Colors.red[400],
+                                              semanticLabel: 'Delete'),
+                                        ),
                                       ),
                                       // onTap: () => ,
                                       title: Text(e.taskName),
