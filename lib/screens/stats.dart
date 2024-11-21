@@ -1,4 +1,5 @@
 import 'package:app_2/components/image.const.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -82,30 +83,41 @@ class Statistics extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        final b = await showDialog<bool>(
+                        final b = await showCupertinoDialog(
                           context: context,
-                          builder: ((context) => AlertDialog(
-                                title: const Text("Clear History"),
-                                content: const Text(
-                                    "This is an irreversible action. This will delete all your stats."),
-                                actions: [
-                                  TextButton(
-                                    onPressed: (() =>
-                                        Navigator.pop(context, false)),
-                                    child: const Text("CANCEL"),
-                                  ),
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                        foregroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .error),
-                                    onPressed: (() =>
-                                        Navigator.pop(context, true)),
-                                    child: const Text("DELETE"),
-                                  )
-                                ],
-                              )),
+                          builder: (BuildContext context) {
+                            final brightness = Brightness.dark;
+                            return CupertinoTheme(
+                                data: CupertinoThemeData(
+                                  // primaryColor: Colors.green, not now color
+                                  brightness: brightness,
+                                ),
+                                child: CupertinoAlertDialog(
+                                  title: Text("Clear History"),
+                                  content: Text(
+                                      "This is an irreversible action. This will delete all your stats."),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      child: Text("CANCEL"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color:
+                                                CupertinoColors.destructiveRed),
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.pop(context, true),
+                                    ),
+                                  ],
+                                ));
+                          },
                         );
+
                         if (b == true) {
                           clearHistory();
                         }
