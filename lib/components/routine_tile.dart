@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -71,6 +72,7 @@ class _RoutineTileState extends State<RoutineTile> {
         closeOnScroll: true,
         key: Key(widget.routine.id),
         startActionPane: ActionPane(
+          dragDismissible: false,
           motion: const ScrollMotion(),
           dismissible: DismissiblePane(
               closeOnCancel: true,
@@ -149,18 +151,44 @@ class _RoutineTileState extends State<RoutineTile> {
                   onPress: onPress,
                   onEdit: onLongPress,
                   onDelete: ((context) {
-                    showDialog(
+                    showCupertinoDialog(
                       context: context,
-                      builder: ((context) => AlertOnDelete(
-                            onCancel: () {
-                              Navigator.pop(context);
-                            },
-                            onDelete: (() {
-                              Provider.of<RoutineModel>(context, listen: false)
-                                  .delete(widget.routine.id);
-                              Navigator.pop(context);
-                            }),
-                          )),
+                      builder: (BuildContext context) {
+                        const brightness = Brightness.dark;
+                        return CupertinoTheme(
+                            data: const CupertinoThemeData(
+                              // primaryColor: Colors.green, not now color
+                              brightness: brightness,
+                            ),
+                            child: CupertinoAlertDialog(
+                              title: const Text("Delete routine?"),
+                              content: const Text(
+                                  "This routine will be deleted. This will remove all the history of this routine as well."),
+                              actions: [
+                                CupertinoDialogAction(
+                                  child: const Text(
+                                    "Not Now",
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                CupertinoDialogAction(
+                                  child: const Text(
+                                    "Delete",
+                                    style: TextStyle(
+                                        color: CupertinoColors.destructiveRed),
+                                  ),
+                                  onPressed: () {
+                                    Provider.of<RoutineModel>(context,
+                                            listen: false)
+                                        .delete(widget.routine.id);
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ));
+                      },
                     );
                   }),
                 ))),
@@ -373,39 +401,88 @@ class CustomTile extends StatelessWidget {
           Theme(
             data: Theme.of(context),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                  child: TextButton.icon(
-                    onPressed: () => onDelete(context),
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red[300],
+                GestureDetector(
+                  onTap: () => onDelete(context),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.purple[50],
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    label: Text(
-                      'Delete',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .apply(color: Colors.red[300]),
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Delete',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .apply(color: Colors.red),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Expanded(
-                  child: TextButton.icon(
-                    onPressed: () => onEdit(context),
-                    icon: Icon(
-                      Icons.edit,
-                      color: Colors.blue[300],
+                GestureDetector(
+                  onTap: () => onEdit(context),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue[50],
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    label: Text(
-                      'Edit',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .apply(color: Colors.blue[300]),
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.edit,
+                          color: Colors.blue,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Edit',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .apply(color: Colors.blue),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                      ],
                     ),
                   ),
                 ),
+                // Expanded(
+                //   child: TextButton.icon(
+                //     onPressed: () => onEdit(context),
+                //     icon: Icon(
+                //       Icons.edit,
+                //       color: Colors.blue[300],
+                //     ),
+                //     label: Text(
+                //       'Edit',
+                //       style: Theme.of(context)
+                //           .textTheme
+                //           .bodyMedium!
+                //           .apply(color: Colors.blue[300]),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           )

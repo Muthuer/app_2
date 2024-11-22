@@ -14,6 +14,7 @@ class TaskCard extends StatelessWidget {
   final bool isCompleted;
   final bool isSkipped;
 
+
   late final Tween<double> tween;
   late final Color textColor;
   final bool isSwipeDisabled;

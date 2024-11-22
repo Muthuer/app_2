@@ -74,7 +74,8 @@ class ArchiveRoutinesScreen extends StatelessWidget {
                               color: Colors.white.withOpacity(.4),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            margin: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
                             child: ListTile(
                               title: Text(
                                 value.archiveRoutines()[index].name,

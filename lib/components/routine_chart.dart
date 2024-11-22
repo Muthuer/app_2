@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:app_2/components/app_colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +37,11 @@ class RoutineChart extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           child: Text(
             "${routine.name.trim()}'s activity will show up here. ",
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: AppColors.black.withOpacity(.5),
+            ),
+            // Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),
         );
@@ -49,7 +55,11 @@ class RoutineChart extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 "${routine.name.trim()}'s Activity",
-                style: Theme.of(context).textTheme.titleLarge,
+                // style: Theme.of(context).textTheme.titleLarge,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: AppColors.black.withOpacity(.5),
+                ),
               ),
             ),
           ),

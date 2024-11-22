@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../components/card.dart';
+import '../components/image.const.dart';
 import '../models/task.dart';
 import '../services/notification_service.dart';
 import '../services/routines_provider.dart';
@@ -194,125 +195,163 @@ class RoutineScreenState extends State<RoutineScreen>
                 : Brightness.dark,
       ),
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          leading: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: IconButton(
-              onPressed: () {
-                if (Provider.of<RoutineModel>(context, listen: false)
-                    .getRoutine(widget.routine)!
-                    .inCompletedTasks
-                    .isNotEmpty) {
-                  final task = Provider.of<RoutineModel>(context, listen: false)
-                      .getRoutine(widget.routine)!
-                      .inCompletedTasks
-                      .first;
-                  NotificationService()
-                      .cancelNotification(task.id + widget.routine);
-                }
+        body: Selector<RoutineModel, List<Task>>(
+          selector: (p0, p1) => p1.getRoutine(widget.routine)!.inCompletedTasks,
+          builder: ((context, value, child) => Stack(
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Positioned.fill(
+                    child: SizedBox.fromSize(
+                      size: MediaQuery.sizeOf(context),
+                      child: Opacity(
+                        opacity: .7,
+                        child: Image.asset(
+                          AppImages.bg1,
+                          fit: BoxFit.cover,
+                          height: MediaQuery.sizeOf(context).height,
+                          width: MediaQuery.sizeOf(context).width,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      child: SafeArea(
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: IconButton(
+                                onPressed: () {
+                                  if (Provider.of<RoutineModel>(context,
+                                          listen: false)
+                                      .getRoutine(widget.routine)!
+                                      .inCompletedTasks
+                                      .isNotEmpty) {
+                                    final task = Provider.of<RoutineModel>(
+                                            context,
+                                            listen: false)
+                                        .getRoutine(widget.routine)!
+                                        .inCompletedTasks
+                                        .first;
+                                    NotificationService().cancelNotification(
+                                        task.id + widget.routine);
+                                  }
 
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                size: 30,
-              ),
-            ),
-          ),
-          title: Selector<RoutineModel, String>(
-            selector: (p0, p1) => p1.getRoutine(widget.routine)!.name,
-            builder: (context, value, child) => Hero(
-              tag: value,
-              child: Text(
-                value,
-                style: GoogleFonts.lato(
-                  fontWeight: FontWeight.bold,
-                  textStyle: Theme.of(context)
-                      .textTheme
-                      .apply(
-                          displayColor: Theme.of(context).colorScheme.onSurface)
-                      .headlineLarge,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          child: Selector<RoutineModel, List<Task>>(
-            selector: (p0, p1) =>
-                p1.getRoutine(widget.routine)!.inCompletedTasks,
-            builder: ((context, value, child) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 7,
-                      child: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          SizedBox(
-                            height: 300,
-                            child: Center(
-                              child: Text("Good Work",
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            Selector<RoutineModel, String>(
+                              selector: (p0, p1) =>
+                                  p1.getRoutine(widget.routine)!.name,
+                              builder: (context, value, child) => Hero(
+                                tag: value,
+                                child: Text(
+                                  value,
                                   style: GoogleFonts.lato(
                                     fontWeight: FontWeight.bold,
                                     textStyle: Theme.of(context)
                                         .textTheme
-                                        .displayMedium!
                                         .apply(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium!
-                                                .color),
-                                  )),
+                                            displayColor: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface)
+                                        .headlineLarge,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
-                          ),
-                          ...value
-                              .asMap()
-                              .entries
-                              .map(
-                                (e) => Consumer<ThemeModel>(
+                          ],
+                        ),
+                      )),
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment
+                          .center, // Center the widget in the parent Stack
+                      child: SizedBox(
+                        height: 300,
+                        child: Stack(
+                          alignment: AlignmentDirectional.center,
+                          children: [
+                            Center(
+                              child: Text(
+                                "Good Work",
+                                style: GoogleFonts.lato(
+                                  fontWeight: FontWeight.bold,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium!
+                                      .apply(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .color,
+                                      ),
+                                ),
+                              ),
+                            ),
+                            ...value
+                                .asMap()
+                                .entries
+                                .map(
+                                  (e) => Consumer<ThemeModel>(
                                     builder: (context, themeData, child) {
-                                  bool isSwipeDis = false;
-                                  if (e.key == 0) {
-                                    int count = 0;
-                                    for (var element in value) {
-                                      if (element.id == e.value.id) {
-                                        count++;
+                                      bool isSwipeDis = false;
+                                      if (e.key == 0) {
+                                        int count = 0;
+                                        for (var element in value) {
+                                          if (element.id == e.value.id) {
+                                            count++;
+                                          }
+                                        }
+                                        if (count == value.length) {
+                                          isSwipeDis = true;
+                                        }
                                       }
-                                    }
-                                    if (count == value.length) {
-                                      isSwipeDis = true;
-                                    }
-                                  }
-                                  return TaskCard(
-                                    isSwipeDisabled:
-                                        value.length == 1 || isSwipeDis,
-                                    isSkipped: _isSkipped,
-                                    isCompleted: _isComplete,
-                                    buttonController: _buttonController,
-                                    isPlaying: _isPlaying,
-                                    onTap: onTap,
-                                    name: e.value.name,
-                                    controller: e.key == 0 ? _controller : null,
-                                    color: themeData.isDark()
-                                        ? darken(Color(e.value.color))
-                                        : Color(e.value.color),
-                                    index: (e.key) * 1.0,
-                                    onDismissed: onDismiss,
-                                  );
-                                }),
-                              )
-                              .toList()
-                              .reversed,
-                        ],
+                                      if (value.length == 0) {
+                                        print("muthu");
+                                      }
+
+                                      return TaskCard(
+                                        isSwipeDisabled:
+                                            value.length == 1 || isSwipeDis,
+                                        isSkipped: _isSkipped,
+                                        isCompleted: _isComplete,
+                                        buttonController: _buttonController,
+                                        isPlaying: _isPlaying,
+                                        onTap: onTap,
+                                        name: e.value.name,
+                                        controller:
+                                            e.key == 0 ? _controller : null,
+                                        color: themeData.isDark()
+                                            ? darken(Color(e.value.color))
+                                            : Color(e.value.color),
+                                        index: (e.key) * 1.0,
+                                        onDismissed: onDismiss,
+                                      );
+                                    },
+                                  ),
+                                )
+                                .toList()
+                                .reversed,
+                          ],
+                        ),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
+                  ),
+                  Positioned.fill(
+                      child: SafeArea(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
                       child: TweenAnimationBuilder<double>(
                           duration: const Duration(milliseconds: 350),
                           tween: Tween(begin: 0, end: value.isEmpty ? 300 : 0),
@@ -320,77 +359,124 @@ class RoutineScreenState extends State<RoutineScreen>
                           builder: ((context, double value, child) =>
                               Transform.translate(
                                 offset: Offset(0, value),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            _isSkipped = true;
-                                          });
-                                        },
-                                        child: const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Icon(Icons.swipe_left_rounded),
-                                            SizedBox(height: 10),
-                                            Text("Skip"),
-                                          ],
+                                child: IntrinsicHeight(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 13, horizontal: 25),
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(90)),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _isSkipped = true;
+                                              });
+                                            },
+                                            child: const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Icon(
+                                                  Icons.swipe_left_rounded,
+                                                  color: Colors.blue,
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  "Skip",
+                                                  style: TextStyle(
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                        flex: 1,
-                                        child: ElevatedButton(
-                                          onPressed: () {
+                                        GestureDetector(
+                                          onTap: () {
                                             onTap(null);
                                           },
-                                          style: ButtonStyle(
-                                            elevation: WidgetStateProperty
-                                                .all<double>(6),
-                                            shape: WidgetStateProperty.all(
-                                                const CircleBorder()),
-                                            padding: WidgetStateProperty.all(
-                                                const EdgeInsets.all(15)),
+                                          // style: ButtonStyle(
+                                          //   backgroundColor:
+                                          //       WidgetStatePropertyAll(Colors
+                                          //           .black
+                                          //           .withOpacity(0.4)),
+                                          //   elevation:
+                                          //       WidgetStateProperty.all<double>(
+                                          //           6),
+                                          //   shape: WidgetStateProperty.all(
+                                          //       const CircleBorder()),
+                                          //   padding: WidgetStateProperty.all(
+                                          //       const EdgeInsets.all(15)),
+                                          // ),
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 13, horizontal: 14),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(90)),
+                                            child: AnimatedIcon(
+                                              icon: AnimatedIcons.play_pause,
+                                              progress: _buttonController,
+                                              // color: Theme.of(context)
+                                              //     .colorScheme
+                                              //     .primary,
+                                              color: Colors.black,
+                                              size: 50,
+                                            ),
                                           ),
-                                          child: AnimatedIcon(
-                                            icon: AnimatedIcons.play_pause,
-                                            progress: _buttonController,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            size: 50,
-                                          ),
-                                        )),
-                                    Expanded(
-                                      flex: 1,
-                                      child: TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            _isComplete = true;
-                                          });
-                                        },
-                                        child: const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Icon(Icons.swipe_right_rounded),
-                                            SizedBox(height: 10),
-                                            Text("Completed"),
-                                          ],
                                         ),
-                                      ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _isComplete = true;
+                                            });
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 13, horizontal: 21),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white
+                                                    .withOpacity(0.7),
+                                                borderRadius:
+                                                    BorderRadius.circular(90)),
+                                            child: const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Icon(
+                                                  Icons.swipe_right_rounded,
+                                                  color: Colors.green,
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  "Done",
+                                                  style: TextStyle(
+                                                      color: Colors.green),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ))),
-                    )
-                  ],
-                )),
-          ),
+                    ),
+                  ))
+                ],
+              )),
         ),
       ),
     );

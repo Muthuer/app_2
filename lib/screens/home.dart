@@ -236,6 +236,7 @@ class HomeScreen extends StatelessWidget {
                                                                 : Icons
                                                                     .play_arrow_rounded,
                                                             size: 30,
+                                                            color: Colors.black,
                                                           ),
                                                         ),
                                                       ),
