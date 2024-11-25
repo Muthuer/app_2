@@ -55,7 +55,7 @@ class TaskCard extends StatelessWidget {
 
   String get timerString {
     if (controller == null) {
-      return "0:00";
+    return "0:00";
     }
 
     Duration duration =

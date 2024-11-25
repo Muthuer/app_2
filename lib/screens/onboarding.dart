@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:lottie/lottie.dart';
+
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
@@ -57,21 +59,21 @@ class _OnBoardingState extends State<OnBoarding> {
                     Page(
                       color: value,
                       title: "Koduko",
-                      imagePath: 'assets/onboarding/person.png',
+                      imagePath: 'assets/animation/person.json',
                       des:
-                          "Hey There! Yes, this is an habit tracker don't let the name fool you. It will help you manage your daily or weekly habits with ease.",
+                          "Welcome! This habit tracker is designed to help you efficiently manage your daily and weekly habits.",
                     ),
                     Page(
                       color: value,
                       title: "You ask features?",
-                      imagePath: 'assets/onboarding/gymTime.png',
+                      imagePath: 'assets/animation/gym.json',
                       des:
                           "It has a lot of them. You add a routine which can contain multiple tasks, Select a time and you are done. It will remind you at the specified time. Also there are statistics ",
                     ),
                     Page(
                       color: value,
                       title: "Ready?",
-                      imagePath: 'assets/onboarding/watch.png',
+                      imagePath: 'assets/animation/watch.png',
                       des: "We hope you are! \n Have fun.",
                     ),
                   ],
@@ -152,7 +154,8 @@ class Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image(image: AssetImage(imagePath)),
+        // Image(image: AssetImage(imagePath)),
+        Lottie.asset(imagePath,),
         Text(
           title,
           style: GoogleFonts.catamaran(
