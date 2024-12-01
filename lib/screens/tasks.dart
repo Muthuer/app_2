@@ -41,6 +41,7 @@ class TasksScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       // floatingActionButton: FloatingActionButton(
       //   onPressed: onCreateTask,
       //   child: const Icon(Icons.add),

@@ -16,30 +16,57 @@ class ArchiveRoutinesScreen extends StatelessWidget {
     return Scaffold(
       body: Consumer<RoutineModel>(
         builder: (context, value, child) => value.archiveRoutines().isEmpty
-            ? Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    child ?? Container(),
-                    Expanded(
-                      flex: 10,
-                      child: Center(
-                        child: Text(
-                          "Archived routines will show up here!",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .apply(
-                                  displayColor:
-                                      Theme.of(context).colorScheme.onSurface)
-                              .headlineMedium,
+            ? Stack(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Positioned.fill(
+                    child: SizedBox.fromSize(
+                      size: MediaQuery.sizeOf(context),
+                      child: Opacity(
+                        opacity: .7,
+                        child: Image.asset(
+                          AppImages.bg2,
+                          fit: BoxFit.cover,
+                          height: MediaQuery.sizeOf(context).height,
+                          width: MediaQuery.sizeOf(context).width,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Positioned(
+                      child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        children: [
+                          child ?? Container(),
+                          Expanded(
+                            flex: 10,
+                            child: Center(
+                              child: Text(
+                                "Archived routines will show up here!",
+                                textAlign: TextAlign.center,
+                                // style: Theme.of(context)
+                                //     .textTheme
+                                //     .apply(
+                                //         displayColor:
+                                //             Theme.of(context).colorScheme.onSurface)
+                                //     .headlineMedium,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .apply(
+                                        displayColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface)
+                                    .headlineMedium,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+                ],
               )
             : Stack(
                 children: [

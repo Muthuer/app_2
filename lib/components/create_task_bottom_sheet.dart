@@ -101,6 +101,10 @@ class _CreateTaskBottomSheetState extends State<CreateTaskBottomSheet> {
   void onChangeChip(bool selected, int index, BuildContext context) async {
     if (chipList.keys.toList()[index] == 'Custom') {
       final r = await showDurationPicker(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.pink.shade100),
+            borderRadius: BorderRadius.circular(15)),
         context: context,
         initialTime: _value != null
             ? _value == 'Custom'
@@ -225,18 +229,21 @@ class _CreateTaskBottomSheetState extends State<CreateTaskBottomSheet> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
                   "Create a Task",
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 32.sp,
+                  ),
                 ),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.only(bottom: 0, left: 15, right: 15),
             child: SizedBox(
               height: MediaQuery.of(context).size.height / 4,
               child: PageView(
@@ -265,57 +272,59 @@ class _CreateTaskBottomSheetState extends State<CreateTaskBottomSheet> {
               ),
             ),
           ),
-          Buttons(
-              text: pageIndex == 2 ? "Done" : null,
-              pageIndex: pageIndex,
-              onPrevious: () {
-                setState(() {
-                  pageIndex--;
-                });
-                if (pageIndex == 0) {
-                  validateName("");
-                }
-                if (pageIndex == 1) {
-                  validateDuration();
-                }
-                _pageController.previousPage(
-                  duration: const Duration(milliseconds: 350),
-                  curve: Curves.easeIn,
-                );
-              },
-              onNext: pageComplected
-                  ? () {
-                      FocusScopeNode currentFocus = FocusScope.of(context);
+          SafeArea(
+            child: Buttons(
+                text: pageIndex == 2 ? "Done" : null,
+                pageIndex: pageIndex,
+                onPrevious: () {
+                  setState(() {
+                    pageIndex--;
+                  });
+                  if (pageIndex == 0) {
+                    validateName("");
+                  }
+                  if (pageIndex == 1) {
+                    validateDuration();
+                  }
+                  _pageController.previousPage(
+                    duration: const Duration(milliseconds: 350),
+                    curve: Curves.easeIn,
+                  );
+                },
+                onNext: pageComplected
+                    ? () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
 
-                      if (!currentFocus.hasPrimaryFocus) {
-                        currentFocus.unfocus();
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+                        setState(() {
+                          pageIndex++;
+                        });
+                        if (pageIndex == 1) {
+                          validateDuration();
+                        }
+                        if (pageIndex == 2) {
+                          validateColor();
+                        }
+                        if (pageIndex == 3) {
+                          final dur = _value! == 'Custom'
+                              ? customTime
+                              : chipList[_value]!;
+                          Navigator.pop(
+                              context,
+                              Task.fromDuration(
+                                  duration: dur,
+                                  name: _nameController.text,
+                                  color: colorList[_selectedColor!]));
+                        }
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 350),
+                          curve: Curves.easeIn,
+                        );
                       }
-                      setState(() {
-                        pageIndex++;
-                      });
-                      if (pageIndex == 1) {
-                        validateDuration();
-                      }
-                      if (pageIndex == 2) {
-                        validateColor();
-                      }
-                      if (pageIndex == 3) {
-                        final dur = _value! == 'Custom'
-                            ? customTime
-                            : chipList[_value]!;
-                        Navigator.pop(
-                            context,
-                            Task.fromDuration(
-                                duration: dur,
-                                name: _nameController.text,
-                                color: colorList[_selectedColor!]));
-                      }
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 350),
-                        curve: Curves.easeIn,
-                      );
-                    }
-                  : null)
+                    : null),
+          )
         ],
       ),
     );
@@ -343,26 +352,43 @@ class Buttons extends StatelessWidget {
         Expanded(
           flex: 3,
           child: pageIndex != 0
-              ? ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor:
-                        Theme.of(context).colorScheme.onSecondaryContainer,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.secondaryContainer,
-                  ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                  onPressed: onPrevious,
-                  icon: const Icon(Icons.chevron_left_sharp),
-                  label: Text(
-                    "Back",
-                    style: Theme.of(context).textTheme.bodyLarge,
+              ? GestureDetector(
+                  onTap: onPrevious,
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 20),
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.pink[50],
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.chevron_left_sharp),
+                        Text(
+                          "Back",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
                   ),
                 )
-              : TextButton(
-                  onPressed: (() {
+              : GestureDetector(
+                  onTap: (() {
                     Navigator.pop(context);
                   }),
-                  child: Text("Cancel",
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 20),
+                    height: 50,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: Colors.pink.shade100,
+                        )),
+                    child: Center(
+                      child: Text("Cancel",
+                          style: Theme.of(context).textTheme.bodyLarge),
+                    ),
+                  ),
                 ),
         ),
         const Spacer(
@@ -370,24 +396,26 @@ class Buttons extends StatelessWidget {
         ),
         Expanded(
           flex: 3,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor:
-                  Theme.of(context).colorScheme.onSecondaryContainer,
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-            onPressed: onNext,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  text ?? "Next",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                text == null
-                    ? const Icon(Icons.chevron_right_sharp)
-                    : Container()
-              ],
+          child: GestureDetector(
+            onTap: onNext,
+            child: Container(
+              margin: const EdgeInsets.only(right: 20),
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.pink[50],
+                  borderRadius: BorderRadius.circular(15)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    text ?? "Next",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  text == null
+                      ? const Icon(Icons.chevron_right_sharp)
+                      : Container()
+                ],
+              ),
             ),
           ),
         )
@@ -413,31 +441,41 @@ class DurationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        Text(
-          "Select a Duration",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
         const SizedBox(
           height: 15,
+        ),
+        Text(
+          "Select a Duration",
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
         ),
         Wrap(
           spacing: 6,
           children: List<Widget>.generate(
             chipList.length,
             (index) => ChoiceChip(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: BorderSide(color: Colors.pink.shade100)),
               label: Text(
                   value == 'Custom' && chipList.keys.toList()[index] == 'Custom'
                       ? '${durationToString(customDuration)} min'
                       : chipList.keys.toList()[index]),
               selected: value == chipList.keys.toList()[index],
-              selectedColor:
-                  Theme.of(context).colorScheme.primary.withOpacity(0.7),
-              backgroundColor:
-                  Theme.of(context).colorScheme.primary.withOpacity(0.15),
+              selectedColor: Colors.pink.shade100,
+              // Theme.of(context).colorScheme.primary.withOpacity(0.7),
+              backgroundColor: Colors.transparent,
+              // Theme.of(context).colorScheme.primary.withOpacity(0.15),
               labelStyle: Theme.of(context).textTheme.labelLarge!.apply(
-                  color: value == chipList.keys.toList()[index]
-                      ? Theme.of(context).colorScheme.onSecondary
-                      : Theme.of(context).colorScheme.onSurface),
+                  color:
+                      //  value == chipList.keys.toList()[index]
+                      // ? Theme.of(context).colorScheme.onSecondary
+                      Theme.of(context).colorScheme.onSurface),
               onSelected: (bool selected) => onChange(selected, index, context),
             ),
           ),
@@ -464,7 +502,11 @@ class ColorPage extends StatelessWidget {
       children: [
         Text(
           "Pick a Color",
-          style: Theme.of(context).textTheme.titleLarge,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: Colors.grey.shade600,
+          ),
+          // Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(
           height: 15,

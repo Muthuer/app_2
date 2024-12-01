@@ -195,7 +195,7 @@ class _CreateRoutineBottomSheetState extends State<CreateRoutineBottomSheet> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text("Create a Routine",
@@ -391,16 +391,19 @@ class Buttons extends StatelessWidget {
           flex: 3,
           child: pageIndex != 0
               ? GestureDetector(
-                  onTap: () {},
+                  onTap: onPrevious,
                   child: Container(
+                    margin: const EdgeInsets.only(left: 20),
+                    height: 50,
                     decoration: BoxDecoration(
                       color: Colors.pink[50],
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.chevron_left_sharp),
+                        const Icon(Icons.chevron_left_sharp),
                         Text(
                           "Back",
                           style: Theme.of(context).textTheme.bodyLarge,
@@ -428,11 +431,11 @@ class Buttons extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Container(
+                    margin: const EdgeInsets.only(left: 20),
+                    height: 50,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(15),
                         border: Border.all(color: Colors.pink.shade100)),
-                    padding: EdgeInsets.all(5),
-                    margin: EdgeInsets.only(left: 20),
                     child: Center(
                       child: Text("Cancel",
                           style: Theme.of(context).textTheme.bodyLarge),
@@ -448,11 +451,12 @@ class Buttons extends StatelessWidget {
           child: GestureDetector(
             onTap: onNext,
             child: Container(
+              margin: const EdgeInsets.only(right: 20),
+              height: 50,
               decoration: BoxDecoration(
                 color: Colors.pink[50],
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(15),
               ),
-              padding: EdgeInsets.all(5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -518,43 +522,98 @@ class TaskSelectPage extends StatelessWidget {
       return ReorderableListView(
         header: Column(
           children: [
+            const SizedBox(
+              height: 40,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Select Tasks',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium!
-                        .apply(color: Theme.of(context).colorScheme.onSurface)),
-                TextButton.icon(
-                  onPressed: (() {
+                Text(
+                  'Select Tasks',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    color: Colors.grey.shade600,
+                  ),
+                  // style: Theme.of(context)
+                  //     .textTheme
+                  //     .headlineMedium!
+                  //     .apply(color: Theme.of(context).colorScheme.onSurface)
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+
                     Navigator.pushNamed(
                       context,
                       TasksScreen.routeName,
                     );
-                  }),
-                  icon: const Icon(Icons.edit_rounded),
-                  label: Text(
-                    'Edit Tasks',
-                    style: Theme.of(context).textTheme.titleMedium!.apply(
-                          color: Theme.of(context).colorScheme.primary,
+                  },
+                  child: Container(
+                    height: 50,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.pink.shade100),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.edit_rounded,
+                          color: Colors.pink[200],
                         ),
+                        Text(
+                          'Edit Tasks',
+                          style: Theme.of(context).textTheme.titleMedium!.apply(
+                                color: Colors.pink[200],
+                                // Theme.of(context).colorScheme.primary,
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
                 )
+                // TextButton.icon(
+                //   onPressed: (() {
+                //     Navigator.pushNamed(
+                //       context,
+                //       TasksScreen.routeName,
+                //     );
+                //   }),
+                //   icon: Icon(
+                //     Icons.edit_rounded,
+                //     color: Colors.pink[200],
+                //   ),
+                //   label: Text(
+                //     'Edit Tasks',
+                //     style: Theme.of(context).textTheme.titleMedium!.apply(
+                //           color: Colors.pink[200],
+                //           // Theme.of(context).colorScheme.primary,
+                //         ),
+                //   ),
+                // )
               ],
             ),
             const SizedBox(height: 35),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Selected Tasks',
-                    style: Theme.of(context).textTheme.titleLarge!),
+                Text(
+                  'Selected Tasks',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    color: Colors.grey.shade600,
+                  ),
+                  // style: Theme.of(context).textTheme.titleLarge!
+                ),
                 Text(
                   'Selected (${selectedTask.length})',
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium!
-                      .apply(color: Theme.of(context).colorScheme.primary),
+                      .apply(color: Colors.pink[200]
+                          //  Theme.of(context).colorScheme.primary
+                          ),
                 ),
               ],
             ),
@@ -564,7 +623,7 @@ class TaskSelectPage extends StatelessWidget {
         footer: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 15),
+            const SizedBox(height: 40),
             Text('Tasks', style: Theme.of(context).textTheme.titleLarge!),
             const SizedBox(height: 10),
             if (value.tasks.isEmpty)
@@ -590,12 +649,23 @@ class TaskSelectPage extends StatelessWidget {
                   .asMap()
                   .map((key, value) => MapEntry(
                       key,
-                      Card(
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.pink[50],
+                            border: Border.all(color: Colors.pink.shade100),
+                            borderRadius: BorderRadius.circular(15)),
                         key: Key('$key+${value.id}'),
                         child: ListTile(
                             trailing: TextButton.icon(
-                              icon: const Icon(Icons.add),
-                              label: const Text("ADD"),
+                              icon: const Icon(
+                                Icons.add,
+                                color: Colors.black,
+                              ),
+                              label: const Text(
+                                "ADD",
+                                style: TextStyle(color: Colors.black),
+                              ),
                               onPressed: () => onTapAdd(value),
                             ),
                             subtitle: Text(
@@ -625,24 +695,41 @@ class TaskSelectPage extends StatelessWidget {
               key: const Key("empty"),
               padding: const EdgeInsets.symmetric(vertical: 25),
               child: Center(
-                child: Text('Select a task and it appears here!',
-                    style: Theme.of(context).textTheme.titleMedium!),
+                child: Text(
+                  'Select a task and it appears here!',
+                  // style: Theme.of(context).textTheme.titleMedium!
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
               ),
             ),
           for (int index = 0; index < selectedTask.length; index++)
-            Card(
+            Container(
+              margin: EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                  color: Colors.pink[50],
+                  border: Border.all(color: Colors.pink.shade100),
+                  borderRadius: BorderRadius.circular(15)),
               key: Key('$index'),
               child: ReorderableDelayedDragStartListener(
                 index: index,
                 child: ListTile(
                     leading: IconButton(
-                      icon: const Icon(Icons.remove),
+                      icon: const Icon(
+                        Icons.remove,
+                        color: Colors.red,
+                      ),
                       color: Theme.of(context).colorScheme.error,
                       onPressed: () => onTapDelete(index),
                     ),
                     trailing: ReorderableDragStartListener(
                       index: index,
-                      child: const Icon(Icons.drag_handle_rounded),
+                      child: const Icon(
+                        Icons.drag_handle_rounded,
+                        color: Colors.black,
+                      ),
                     ),
                     subtitle: Text(
                       'Duration : ${durationToString(parseDuration(selectedTask[index].duration))} Min',
@@ -687,6 +774,7 @@ class RepeatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<void> selectTime(BuildContext context) async {
       TimeOfDay? pickedTime = await showTimePicker(
+        
         context: context,
         initialTime: time ?? TimeOfDay.now(),
         builder: (context, child) => MediaQuery(
@@ -701,38 +789,56 @@ class RepeatPage extends StatelessWidget {
 
     return ListView(
       children: [
+        const SizedBox(
+          height: 20,
+        ),
         Text(
           "Repeat",
-          style: Theme.of(context).textTheme.titleLarge,
+          // style: Theme.of(context).textTheme.titleLarge,
+          style: TextStyle(
+            fontSize: 18.sp,
+            color: Colors.grey.shade600,
+          ),
         ),
         const SizedBox(
-          height: 15,
+          height: 10,
         ),
         Wrap(
           children: [
             ChoiceChip(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: BorderSide(color: Colors.pink.shade100)),
               label: const Text("Daily"),
               pressElevation: 0,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.horizontal(left: Radius.circular(5)),
-              ),
+              // shape: const RoundedRectangleBorder(
+              //   // borderRadius: BorderRadius.horizontal(left: Radius.circular(5)),
+              // ),
               selected: !selectedDays.values.contains(false),
+              selectedColor: Colors.pink.shade100,
               backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
               onSelected: (value) => onChangeRepeatType(RepeatType.daily),
-              selectedColor: Theme.of(context).colorScheme.inversePrimary,
+              // selectedColor: Theme.of(context).colorScheme.inversePrimary,
               labelStyle: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(
+              width: 10,
             ),
             ChoiceChip(
               label: const Text("Only on"),
-              shape: const RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.horizontal(right: Radius.circular(5)),
-              ),
+              // shape: const RoundedRectangleBorder(
+              //   borderRadius:
+              //       BorderRadius.horizontal(right: Radius.circular(5)),
+              // ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: BorderSide(color: Colors.pink.shade100)),
               pressElevation: 0,
               selected: selectedDays.values.contains(false),
               backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
               onSelected: (value) => onChangeRepeatType(RepeatType.onlyOn),
-              selectedColor: Theme.of(context).colorScheme.inversePrimary,
+              // selectedColor: Theme.of(context).colorScheme.inversePrimary,
+              selectedColor: Colors.pink.shade100,
               labelStyle: Theme.of(context).textTheme.titleMedium,
             ),
           ],
@@ -746,14 +852,19 @@ class RepeatPage extends StatelessWidget {
                       (e) => Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: ChoiceChip(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(color: Colors.pink.shade100)),
                           elevation: 3,
                           label: Text(e),
                           selected: selectedDays[e] ?? false,
                           backgroundColor:
                               Theme.of(context).colorScheme.onInverseSurface,
                           onSelected: (value) => onDayChange(e, value),
-                          selectedColor:
-                              Theme.of(context).colorScheme.inversePrimary,
+                          // selectedColor:
+                          //     Theme.of(context).colorScheme.inversePrimary,
+                          selectedColor: Colors.pink.shade100,
+
                           labelStyle: Theme.of(context).textTheme.labelMedium,
                         ),
                       ),
@@ -768,14 +879,54 @@ class RepeatPage extends StatelessWidget {
           children: [
             Text(
               "Notification",
-              style: Theme.of(context).textTheme.titleLarge,
+              // style: Theme.of(context).textTheme.titleLarge,
+              style: TextStyle(
+                fontSize: 17.sp,
+                color: Colors.grey.shade600,
+              ),
             ),
-            TextButton.icon(
-                onPressed: onToggleNotification,
-                icon: notification
-                    ? const Icon(Icons.notifications_active_rounded)
-                    : const Icon(Icons.notifications_off_rounded),
-                label: notification ? const Text("ON") : const Text("OFF"))
+            GestureDetector(
+              onTap: onToggleNotification,
+              child: Container(
+                height: 50,
+                width: 80,
+                margin: EdgeInsets.only(right: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.pink.shade100),
+                    borderRadius: BorderRadius.circular(15)),
+                child: Center(
+                  child: Row(
+                    children: [
+                      notification
+                          ? Icon(
+                              Icons.notifications_active_rounded,
+                              color: Colors.pink[200],
+                            )
+                          : Icon(
+                              Icons.notifications_off_rounded,
+                              color: Colors.pink[200],
+                            ),
+                      Text(
+                        notification ? 'ON' : 'OFF',
+                        style: Theme.of(context).textTheme.titleMedium!.apply(
+                              color: Colors.pink[200],
+                              // Theme.of(context).colorScheme.primary,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // TextButton.icon(
+            //     onPressed: onToggleNotification,
+            //     icon: notification
+            //         ? const Icon(Icons.notifications_active_rounded)
+            //         : const Icon(Icons.notifications_off_rounded),
+            //     label: notification ? const Text("ON") : const Text("OFF"))
           ],
         ),
         notification
@@ -786,20 +937,38 @@ class RepeatPage extends StatelessWidget {
                   children: [
                     Text(
                       "Select Time",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                      // style: Theme.of(context).textTheme.titleMedium,
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        color: Colors.grey.shade600,
                       ),
-                      onPressed: () => selectTime(context),
-                      child: time == null
-                          ? const Text("Select Time")
-                          : Text(
-                              time!.format(context),
-                            ),
+                    ),
+                    GestureDetector(
+                      onTap: () => selectTime(context),
+                      child: Container(
+                        height: 50,
+
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.pink.shade100),
+                            borderRadius: BorderRadius.circular(15)),
+                        // style: ElevatedButton.styleFrom(
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //   ),
+                        // ),
+
+                        child: time == null
+                            ? Center(child: const Text("Select Time"))
+                            : Center(
+                                child: Text(
+                                  time!.format(context),
+                                  style: TextStyle(color: Colors.pink[200]),
+                                ),
+                              ),
+                      ),
                     ),
                   ],
                 ),

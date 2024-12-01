@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class NamePage extends StatelessWidget {
   const NamePage(
       {super.key,
@@ -19,9 +18,12 @@ class NamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(
+          height: 50,
+        ),
         Text(
           title,
           // style: Theme.of(context).textTheme.titleLarge,
@@ -60,7 +62,7 @@ class NamePage extends StatelessWidget {
             fillColor: Colors
                 .pink[50], // Optional: Background color for the text field
             hintText: hintText,
-            hintStyle: TextStyle(fontSize: 13.5),
+            hintStyle: const TextStyle(fontSize: 13.5),
             errorText:
                 nameController.text.length > 2 || nameController.text.isEmpty
                     ? null
@@ -81,7 +83,7 @@ class NamePage extends StatelessWidget {
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15.0),
               borderSide:
-                  BorderSide(color: Colors.red), // Optional: Error border
+                  const BorderSide(color: Colors.red), // Optional: Error border
             ),
           ),
         ),
