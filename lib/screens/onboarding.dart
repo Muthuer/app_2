@@ -262,13 +262,32 @@ class Buttons extends StatelessWidget {
           AnimatedCrossFade(
             alignment: Alignment.center,
             firstChild: TextButton.icon(
-              icon: const Icon(Icons.chevron_left_rounded),
-              label: Text('Back'),
+              icon: const Icon(
+                Icons.chevron_left_rounded,
+                color: Colors.black,
+              ),
+              label: const Text(
+                'Back',
+                style: TextStyle(color: Colors.black, fontSize: 15),
+              ),
               onPressed: onPrevious,
             ),
-            secondChild: ElevatedButton(
-              onPressed: onSkip,
-              child: const Text('Skip'),
+            secondChild: GestureDetector(
+              onTap: onSkip,
+              child: Container(
+                  width: 100,
+                  // height: 50,
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Skip',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  )),
             ),
             crossFadeState: pageIndex == 0
                 ? CrossFadeState.showSecond
@@ -279,14 +298,31 @@ class Buttons extends StatelessWidget {
             alignment: Alignment.center,
             firstChild: TextButton.icon(
               label: text == null
-                  ? const Icon(Icons.chevron_right_rounded)
+                  ? const Icon(
+                      Icons.chevron_right_rounded,
+                      color: Colors.black,
+                    )
                   : Container(),
-              icon: Text('Next'),
+              icon: const Text('Next',
+                  style: TextStyle(color: Colors.black, fontSize: 15)),
               onPressed: onNext,
             ),
-            secondChild: ElevatedButton(
-              onPressed: onNext,
-              child: Text(text ?? 'Done'),
+            secondChild: GestureDetector(
+              onTap: onNext,
+              child: Container(
+                  width: 100,
+                  // height: 50,
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Center(
+                    child: Text(
+                      text ?? 'Done',
+                      style: const TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  )),
             ),
             crossFadeState: text == null
                 ? CrossFadeState.showFirst

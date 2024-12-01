@@ -17,7 +17,7 @@ class TaskTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(5),
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(.4),
         borderRadius: BorderRadius.circular(20),
@@ -33,6 +33,8 @@ class TaskTile extends StatelessWidget {
                     Task? t = await showModalBottomSheet<Task>(
                         isScrollControlled: true,
                         isDismissible: true,
+                        barrierColor: Colors.black.withOpacity(0.6),
+                        backgroundColor: Colors.white,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
                             top: Radius.circular(10),
@@ -71,12 +73,12 @@ class TaskTile extends StatelessWidget {
                               brightness: brightness,
                             ),
                             child: CupertinoAlertDialog(
-                              title: Text("Delete task?"),
-                              content: Text(
+                              title: const Text("Delete task?"),
+                              content: const Text(
                                   "This task will be removed from all routines. If a routine contains only this task, the routine will be deleted as well."),
                               actions: [
                                 CupertinoDialogAction(
-                                  child: Text(
+                                  child: const Text(
                                     "Not Now",
                                   ),
                                   onPressed: () {
@@ -84,7 +86,7 @@ class TaskTile extends StatelessWidget {
                                   },
                                 ),
                                 CupertinoDialogAction(
-                                  child: Text(
+                                  child: const Text(
                                     "Delete",
                                     style: TextStyle(
                                         color: CupertinoColors.destructiveRed),
@@ -140,7 +142,7 @@ class TaskTile extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.delete,
                       color: Colors.red,
                     ),

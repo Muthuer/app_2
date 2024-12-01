@@ -26,27 +26,6 @@ class RoutinesScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      // floatingActionButton: FloatingActionButton(
-      //   child: const Icon(Icons.add),
-      //   onPressed: () async {
-      //     Routine? r = await showModalBottomSheet<Routine>(
-      //         isScrollControlled: true,
-      //         isDismissible: true,
-      //         shape: const RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.vertical(
-      //             top: Radius.circular(10),
-      //             bottom: Radius.zero,
-      //           ),
-      //         ),
-      //         context: context,
-      //         builder: ((context) => const CreateRoutineBottomSheet()));
-
-      //     if (r != null) {
-      //       addRoutine(r);
-      //     }
-      //   },
-      // ),
       body: Consumer<RoutineModel>(
         builder: ((context, value, child) {
           final Duration totalTime = value.todaysRoutines().fold(
@@ -55,7 +34,6 @@ class RoutinesScreen extends StatelessWidget {
                   previousValue + element.getTimeLeft());
           return value.todaysRoutines().isEmpty && value.allRoutines().isEmpty
               ? Stack(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Positioned.fill(
                       child: SizedBox.fromSize(
@@ -72,94 +50,91 @@ class RoutinesScreen extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        SafeArea(
-                          child: Expanded(
-                            flex: 1,
-                            child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 20),
+                          SafeArea(
+                            child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20.0),
-                                  child: Text(
-                                    "Routines",
-                                    style: GoogleFonts.lato(
-                                      fontWeight: FontWeight.bold,
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .apply(
-                                              displayColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface)
-                                          .headlineLarge,
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 20.0),
+                                      child: Text(
+                                        "Routines",
+                                        style: GoogleFonts.lato(
+                                          fontWeight: FontWeight.bold,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .apply(
+                                                  displayColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .onSurface)
+                                              .headlineLarge,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                const Spacer(),
-                                GestureDetector(
-                                  onTap: () async {
-                                    Routine? r = await showModalBottomSheet<
-                                            Routine>(
-                                        barrierColor:
-                                            Colors.black.withOpacity(0.6),
-                                        backgroundColor: Colors.white,
-                                        isScrollControlled: true,
-                                        isDismissible: true,
-                                        // shape: const RoundedRectangleBorder(
-                                        //   borderRadius: BorderRadius.vertical(
-                                        //     top: Radius.circular(10),
-                                        //     bottom: Radius.zero,
-                                        //   ),
-                                        // ),
-                                        context: context,
-                                        builder: ((context) =>
-                                            const CreateRoutineBottomSheet()));
+                                    const Spacer(),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        Routine? r =
+                                            await showModalBottomSheet<Routine>(
+                                          barrierColor:
+                                              Colors.black.withOpacity(0.6),
+                                          backgroundColor: Colors.white,
+                                          isScrollControlled: true,
+                                          isDismissible: true,
+                                          context: context,
+                                          builder: ((context) =>
+                                              const CreateRoutineBottomSheet()),
+                                        );
 
-                                    if (r != null) {
-                                      addRoutine(r);
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 50,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(30),
+                                        if (r != null) {
+                                          addRoutine(r);
+                                        }
+                                      },
+                                      child: Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        child: const Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
-                                    child: const Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                    const SizedBox(width: 20),
+                                  ],
                                 ),
-                                const SizedBox(
-                                  width: 20,
-                                )
                               ],
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 30),
-                        Expanded(
-                          flex: 10,
-                          child: Center(
-                            child: Text(
-                              "Looks Empty! \n Try to add a routine",
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .apply(
-                                      displayColor: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface)
-                                  .headlineMedium,
+                          const SizedBox(height: 30),
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                "Looks Empty! \n Try to add a routine",
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .apply(
+                                        displayColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface)
+                                    .headlineMedium,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )),
+                        ],
+                      ),
+                    ),
                   ],
                 )
               : Stack(
@@ -179,13 +154,13 @@ class RoutinesScreen extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                        child: ListView(
-                      children: [
-                        value.todaysRoutines().isEmpty
-                            ? Container()
-                            : Container(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
+                      child: ListView(
+                        children: [
+                          value.todaysRoutines().isEmpty
+                              ? Container()
+                              : Container(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -231,21 +206,22 @@ class RoutinesScreen extends StatelessWidget {
                                           ),
                                           GestureDetector(
                                             onTap: () async {
-                                              Routine? r = await showModalBottomSheet<
+                                              Routine? r =
+                                                  await showModalBottomSheet<
                                                       Routine>(
-                                                  isScrollControlled: true,
-                                                  isDismissible: true,
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.vertical(
-                                                      top: Radius.circular(10),
-                                                      bottom: Radius.zero,
-                                                    ),
+                                                isScrollControlled: true,
+                                                isDismissible: true,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.vertical(
+                                                    top: Radius.circular(10),
                                                   ),
-                                                  context: context,
-                                                  builder: ((context) =>
-                                                      const CreateRoutineBottomSheet()));
+                                                ),
+                                                context: context,
+                                                builder: ((context) =>
+                                                    const CreateRoutineBottomSheet()),
+                                              );
 
                                               if (r != null) {
                                                 addRoutine(r);
@@ -264,7 +240,7 @@ class RoutinesScreen extends StatelessWidget {
                                                 color: Colors.white,
                                               ),
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                       ...value
@@ -273,44 +249,35 @@ class RoutinesScreen extends StatelessWidget {
                                                 routine: e,
                                                 isToday: true,
                                                 onEdit: editRoutine,
-                                              ))
-                                    ]),
-                              ),
-                        value.allRoutines().isEmpty
-                            ? Container()
-                            : Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(.4),
-                                  borderRadius: BorderRadius.circular(30),
+                                              )),
+                                    ],
+                                  ),
                                 ),
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
+                          value.allRoutines().isEmpty
+                              ? Container()
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(.4),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      value.routines
-                                              .where(
-                                                (element) =>
-                                                    element.days.contains(
-                                                  DateFormat('EEEE')
-                                                      .format(DateTime.now()),
-                                                ),
-                                              )
-                                              .isEmpty
-                                          ? const SizedBox(height: 20)
-                                          : Container(),
                                       Text(
                                         "All Routines",
                                         style: GoogleFonts.lato(
-                                            fontWeight: FontWeight.bold,
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .apply(
-                                                    displayColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .onSurface)
-                                                .headlineMedium),
+                                          fontWeight: FontWeight.bold,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .apply(
+                                                  displayColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .onSurface)
+                                              .headlineMedium,
+                                        ),
                                       ),
                                       const SizedBox(height: 20),
                                       ...value
@@ -318,11 +285,13 @@ class RoutinesScreen extends StatelessWidget {
                                           .map((e) => RoutineTile(
                                                 routine: e,
                                                 onEdit: editRoutine,
-                                              ))
-                                    ]),
-                              )
-                      ],
-                    ))
+                                              )),
+                                    ],
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ),
                   ],
                 );
         }),

@@ -1,5 +1,6 @@
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/task.dart';
 import '../utils/duration_to_string.dart';
@@ -207,9 +208,25 @@ class _CreateTaskBottomSheetState extends State<CreateTaskBottomSheet> {
           Center(
             child: Column(
               children: [
-                const Icon(
-                  Icons.drag_handle_rounded,
-                  size: 26,
+                Container(
+                  width: 40.w,
+                  height: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(.4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Container(
+                  width: 30.w,
+                  height: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(.4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Text(
                   "Create a Task",

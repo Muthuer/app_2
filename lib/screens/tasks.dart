@@ -29,14 +29,10 @@ class TasksScreen extends StatelessWidget {
 
     void onCreateTask() async {
       Task? t = await showModalBottomSheet<Task>(
+          barrierColor: Colors.black.withOpacity(0.6),
+          backgroundColor: Colors.white,
           isScrollControlled: true,
           isDismissible: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(10),
-              bottom: Radius.zero,
-            ),
-          ),
           context: context,
           builder: ((context) => const CreateTaskBottomSheet()));
       if (t != null) {
