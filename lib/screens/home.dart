@@ -366,15 +366,17 @@ class Header extends StatelessWidget {
                 textStyle: textTheme.headlineLarge,
               ),
             ),
-            const SizedBox(width: 8),
-            SizedBox(
-              width: 80,
-              height: 50,
-              child: Lottie.asset(
-                fit: BoxFit.cover,
-                animate: true,
-                lottieFile, // Replace with your Lottie animation file path
-                repeat: false, // Makes the animation loop
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: SizedBox(
+                width: 80,
+                height: 50,
+                child: Lottie.asset(
+                  fit: BoxFit.cover,
+                  lottieFile, // Replace with your Lottie animation file path
+                  repeat: false, // Makes the animation loop
+                ),
               ),
             ),
           ],
