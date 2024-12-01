@@ -7,6 +7,7 @@ import 'package:app_2/utils/greetings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -336,17 +337,47 @@ class Header extends StatelessWidget {
 
   final TextTheme textTheme;
 
+  String getLottieFile(String greeting) {
+    switch (greeting) {
+      case 'Morning':
+        return 'assets/animation/sunrise.json'; // Replace with your morning animation file
+      case 'Afternoon':
+        return 'assets/animation/sunrise.json'; // Replace with your afternoon animation file
+      case 'Evening':
+        return 'assets/animation/sunset.json'; // Replace with your evening animation file
+      default:
+        return 'assets/animation/sunrise.json'; // Fallback animation
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final String greetingText = greeting();
+    final String lottieFile = getLottieFile(greetingText);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          'Good ${greeting()} 👋',
-          style: GoogleFonts.lato(
-            fontWeight: FontWeight.bold,
-            textStyle: textTheme.headlineLarge,
-          ),
+        Row(
+          children: [
+            Text(
+              'Good ${greeting()}',
+              style: GoogleFonts.lato(
+                fontWeight: FontWeight.bold,
+                textStyle: textTheme.headlineLarge,
+              ),
+            ),
+            const SizedBox(width: 8),
+            SizedBox(
+              width: 80,
+              height: 50,
+              child: Lottie.asset(
+                fit: BoxFit.cover,
+                animate: true,
+                lottieFile, // Replace with your Lottie animation file path
+                repeat: false, // Makes the animation loop
+              ),
+            ),
+          ],
         ),
         Text(
           DateFormat.MMMMEEEEd().format(DateTime.now()),
