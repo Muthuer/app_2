@@ -1,8 +1,8 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:lottie/lottie.dart';
-
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
@@ -16,12 +16,6 @@ class _OnBoardingState extends State<OnBoarding> {
   int _index = 0;
   late final PageController _pageController;
 
-  final okColors = [
-    const Color.fromRGBO(251, 187, 91, 1),
-    const Color.fromRGBO(44, 155, 243, 1),
-    const Color.fromRGBO(67, 60, 85, 1),
-  ];
-
   @override
   void initState() {
     _pageController = PageController();
@@ -31,153 +25,212 @@ class _OnBoardingState extends State<OnBoarding> {
   @override
   void dispose() {
     _pageController.dispose();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return TweenAnimationBuilder<Color?>(
-      tween: ColorTween(
-          begin: const Color.fromRGBO(251, 187, 91, 1), end: okColors[_index]),
-      duration: const Duration(milliseconds: 250),
-      builder: (context, value, child) => Scaffold(
-        backgroundColor: value,
-        body: Container(
-          color: value,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 10,
-                child: PageView(
-                  controller: _pageController,
-                  onPageChanged: (value) => setState(() {
-                    _index = value;
-                  }),
-                  children: [
-                    Page(
-                      color: value,
-                      title: "Koduko",
-                      imagePath: 'assets/animation/person.json',
-                      des:
-                          "Welcome! This habit tracker is designed to help you efficiently manage your daily and weekly habits.",
-                    ),
-                    Page(
-                      color: value,
-                      title: "You ask features?",
-                      imagePath: 'assets/animation/gym.json',
-                      des:
-                          "It has a lot of them. You add a routine which can contain multiple tasks, Select a time and you are done. It will remind you at the specified time. Also there are statistics ",
-                    ),
-                    Page(
-                      color: value,
-                      title: "Ready?",
-                      imagePath: 'assets/animation/watch.png',
-                      des: "We hope you are! \n Have fun.",
-                    ),
-                  ],
-                ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Gradient background
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFFFBBA5B).withOpacity(0.8), // Color 1
+                  const Color(0xFF2C9BF3).withOpacity(0.4), // Color 2
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Buttons(
-                  onSkip: () {
-                    setState(() {
-                      _index = 2;
-                    });
-                    _pageController.animateToPage(2,
-                        curve: Curves.easeIn,
-                        duration: const Duration(milliseconds: 250));
-                  },
-                  pageIndex: _index,
-                  onNext: () {
-                    if (_index == 2) {
-                      final box = Hive.box<bool>('Theme');
-        
-                      if (box.isOpen) {
-                        box.put('isNewUser', false);
-                      }
-                      Navigator.pushReplacementNamed(context, '/');
-                    }
-                    if (_index > 1) {
-                      return;
-                    }
-                    setState(() {
-                      _index++;
-                    });
-                    _pageController.nextPage(
-                      duration: const Duration(milliseconds: 250),
-                      curve: Curves.easeIn,
-                    );
-                  },
-                  onPrevious: () {
-                    if (_index <= 0) {
-                      return;
-                    }
-                    setState(() {
-                      _index--;
-                    });
-                    _pageController.previousPage(
-                      duration: const Duration(milliseconds: 250),
-                      curve: Curves.easeIn,
-                    );
-                  },
-                  text: _index == 2 ? 'Start' : null,
-                  color: value,
-                ),
-              )),
-              const SizedBox(height: 10)
-            ],
+            ),
           ),
-        ),
+          // Blur effect
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: const Offset(4, 4),
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                  ),
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.6),
+                    offset: const Offset(-4, -4),
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    flex: 10,
+                    child: PageView(
+                      controller: _pageController,
+                      onPageChanged: (value) => setState(() {
+                        _index = value;
+                      }),
+                      children: [
+                        const Page(
+                          backgroundImage: 'assets/images/bg3.png',
+                          title: "Koduko",
+                          imagePath: 'assets/animation/person.json',
+                          des:
+                              "Welcome! This habit tracker is designed to help you efficiently manage your daily and weekly habits.",
+                        ),
+                        const Page(
+                          backgroundImage: 'assets/images/bg1.png',
+                          title: "You ask features?",
+                          imagePath: 'assets/animation/gym.json',
+                          des:
+                              "It has a lot of them. You add a routine which can contain multiple tasks, select a time, and you're done. It will remind you at the specified time. Also, there are statistics.",
+                        ),
+                        const Page(
+                          backgroundImage: 'assets/images/bg2.png',
+                          title: "Ready?",
+                          imagePath: 'assets/animation/watch.json',
+                          des: "We hope you are! \n Have fun.",
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Buttons(
+                        onSkip: () {
+                          setState(() {
+                            _index = 2;
+                          });
+                          _pageController.animateToPage(
+                            2,
+                            curve: Curves.easeIn,
+                            duration: const Duration(milliseconds: 250),
+                          );
+                        },
+                        pageIndex: _index,
+                        onNext: () {
+                          if (_index == 2) {
+                            final box = Hive.box<bool>('Theme');
+                            if (box.isOpen) {
+                              box.put('isNewUser', false);
+                            }
+                            Navigator.pushReplacementNamed(context, '/');
+                          }
+                          if (_index > 1) {
+                            return;
+                          }
+                          setState(() {
+                            _index++;
+                          });
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeIn,
+                          );
+                        },
+                        onPrevious: () {
+                          if (_index <= 0) {
+                            return;
+                          }
+                          setState(() {
+                            _index--;
+                          });
+                          _pageController.previousPage(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeIn,
+                          );
+                        },
+                        text: _index == 2 ? 'Start' : null,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class Page extends StatelessWidget {
-  const Page({
-    super.key,
-    required this.imagePath,
-    required this.title,
-    required this.des,
-    required this.color,
-  });
+  const Page(
+      {super.key,
+      required this.imagePath,
+      required this.title,
+      required this.des,
+      required this.backgroundImage});
+
   final String imagePath;
   final String title;
+  final String backgroundImage;
   final String des;
-  final Color? color;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        // Image(image: AssetImage(imagePath)),
-        Lottie.asset(imagePath,),
-        Text(
-          title,
-          style: GoogleFonts.catamaran(
-              fontWeight: FontWeight.bold,
-              textStyle: Theme.of(context).textTheme.headlineLarge!.apply(
-                  color: (color?.computeLuminance() ?? 0.1) > 0.5
-                      ? Colors.black
-                      : Colors.white)),
-        ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            des,
-            style: GoogleFonts.raleway(
-                textStyle: Theme.of(context).textTheme.titleMedium!.apply(
-                    color: (color?.computeLuminance() ?? 0.1) > 0.5
-                        ? Colors.black
-                        : Colors.white)),
-            textAlign: TextAlign.center,
+        Positioned.fill(
+          child: SizedBox.fromSize(
+            size: MediaQuery.sizeOf(context),
+            child: Opacity(
+              opacity: 0.7,
+              child: Image.asset(
+                'assets/images/bg4.png', // Example asset
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        )
+        ),
+        Positioned.fill(
+          child: SizedBox.fromSize(
+            size: MediaQuery.sizeOf(context),
+            child: Opacity(
+              opacity: 0.7,
+              child: Image.asset(
+                backgroundImage, // Example asset
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 100),
+                child: Lottie.asset(imagePath, width: 400, fit: BoxFit.cover),
+              ),
+              Text(
+                title,
+                style: GoogleFonts.catamaran(
+                  fontWeight: FontWeight.bold,
+                  textStyle: Theme.of(context).textTheme.headlineLarge,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  des,
+                  style: GoogleFonts.raleway(
+                    textStyle: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -191,96 +244,49 @@ class Buttons extends StatelessWidget {
     required this.onPrevious,
     required this.onSkip,
     required this.text,
-    this.color,
   });
-  final Color? color;
+
   final int pageIndex;
   final void Function() onNext;
   final void Function() onPrevious;
   final void Function() onSkip;
-
   final String? text;
 
   @override
   Widget build(BuildContext context) {
-    final Color textColor =
-        (color?.computeLuminance() ?? 0.1) > 0.5 ? Colors.black : Colors.white;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AnimatedCrossFade(
-              alignment: Alignment.center,
-              firstChild: TextButton.icon(
-                icon: const Icon(Icons.chevron_left_rounded),
-                style: TextButton.styleFrom(
-                  foregroundColor: textColor,
-                ),
-                label: Text(
-                  'Back',
-                  style: Theme.of(context).textTheme.titleSmall!.apply(
-                        color: textColor,
-                      ),
-                ),
-                onPressed: onPrevious,
-              ),
-              secondChild: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[900],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    )),
-                onPressed: onSkip,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    'Skip',
-                    style: Theme.of(context).textTheme.titleSmall!.apply(
-                          color: Colors.white,
-                        ),
-                  ),
-                ),
-              ),
-              crossFadeState: pageIndex == 0
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
-              duration: const Duration(milliseconds: 250)),
+            alignment: Alignment.center,
+            firstChild: TextButton.icon(
+              icon: const Icon(Icons.chevron_left_rounded),
+              label: Text('Back'),
+              onPressed: onPrevious,
+            ),
+            secondChild: ElevatedButton(
+              onPressed: onSkip,
+              child: const Text('Skip'),
+            ),
+            crossFadeState: pageIndex == 0
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 250),
+          ),
           AnimatedCrossFade(
             alignment: Alignment.center,
             firstChild: TextButton.icon(
               label: text == null
                   ? const Icon(Icons.chevron_right_rounded)
                   : Container(),
-              style: TextButton.styleFrom(
-                foregroundColor: textColor,
-              ),
-              icon: Text(
-                'Next',
-                style: Theme.of(context).textTheme.titleSmall!.apply(
-                      color: textColor,
-                    ),
-              ),
+              icon: Text('Next'),
               onPressed: onNext,
             ),
             secondChild: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
               onPressed: onNext,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  text ?? 'Done',
-                  style: Theme.of(context).textTheme.titleSmall!.apply(
-                        color: Colors.grey[900],
-                      ),
-                ),
-              ),
+              child: Text(text ?? 'Done'),
             ),
             crossFadeState: text == null
                 ? CrossFadeState.showFirst
