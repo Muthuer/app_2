@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import '../components/app_colors.dart';
@@ -12,8 +13,15 @@ import 'about.dart';
 import 'archive_routines.dart';
 import 'stats.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  InterstitialAd? interstitialAd;
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context)
@@ -307,6 +315,32 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              ElevatedButton(
+                  onPressed: () {
+                    InterstitialAd.load(
+                        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+                        request: const AdRequest(),
+                        adLoadCallback:
+                            InterstitialAdLoadCallback(onAdLoaded: (ad) {
+                          interstitialAd = ad;
+                          interstitialAd!.show();
+                          interstitialAd!.fullScreenContentCallback =
+                              FullScreenContentCallback(
+                            onAdFailedToShowFullScreenContent: (ad, error) {
+                              ad.dispose();
+                              interstitialAd!.dispose();
+                              debugPrint(error.message);
+                            },
+                            onAdDismissedFullScreenContent: (ad) {
+                              ad.dispose();
+                              interstitialAd!.dispose();
+                            },
+                          );
+                        }, onAdFailedToLoad: (error) {
+                          debugPrint(error.message);
+                        }));
+                  },
+                  child: const Text("press here")),
               const SizedBox(height: 200),
 
               Center(
