@@ -343,13 +343,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: const Text("press here")),
               const SizedBox(height: 200),
 
-              Center(
-                child: Text(
-                  "Version: 1.0.0",
-                  style: textTheme.labelMedium!.apply(
-                      color: textTheme.labelMedium!.color!.withOpacity(0.5)),
-                ),
-              ),
+              // Center(
+              //   child: Text(
+              //     "Version: 1.0.0",
+              //     style: textTheme.labelMedium!.apply(
+              //         color: textTheme.labelMedium!.color!.withOpacity(0.5)),
+              //   ),
+              // ),
               const SizedBox(height: 5),
               Center(
                 child: Text(
